@@ -77,6 +77,3 @@ random_4 = random_4.normal(shape=(3, 2))
 print(random_tensor1 == random_3)#These have used the same seed and the answer will be True!
 print(random_3 == random_4)#Different seeds have been used as such the answer will be False!
 
-
-
-
