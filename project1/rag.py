@@ -115,4 +115,53 @@ min_token_length = 30
 for row in df[df["chunk_token_count"] <= min_token_length].sample(5).iterrows():
     print(f'Chunk token count: {row[1]["chunk_token_count"]} | Text: {row[1]["sentence_chunk"]}')
 
+pages_and_chunks_over_min_token_len = df[df["chunk_token_count"] > min_token_length].to_dict(orient="records")
+pages_and_chunks_over_min_token_len[:2]
+
+
+from sentence_transformers import SentenceTransformer
+embedding_model = SentenceTransformer(model_name_or_path="all-mpnet-base-v2", 
+                                      device="cpu") # choose the device to load the model to (note: GPU will often be *much* faster than CPU)
+
+# Create a list of sentences to turn into numbers
+sentences = [
+    "The Sentences Transformers library provides an easy and open-source way to create embeddings.",
+    "Sentences can be embedded one by one or as a list of strings.",
+    "Embeddings are one of the most powerful concepts in machine learning!",
+    "Learn to use embeddings well and you'll be well on your way to being an AI engineer."
+]
+
+# Sentences are encoded/embedded by calling model.encode()
+embeddings = embedding_model.encode(sentences)
+embeddings_dict = dict(zip(sentences, embeddings))
+
+# See the embeddings
+for sentence, embedding in embeddings_dict.items():
+    print("Sentence:", sentence)
+    print("Embedding:", embedding)
+    print("")
+
+embedding_model.to("cuda") # requires a GPU installed, for reference on my local machine, I'm using a NVIDIA RTX 4090
+
+# Create embeddings one by one on the GPU
+for item in tqdm(pages_and_chunks_over_min_token_len):
+    item["embedding"] = embedding_model.encode(item["sentence_chunk"])
+
+
+text_chunks = [item["sentence_chunk"] for item in pages_and_chunks_over_min_token_len]
+
+# Embed all texts in batches
+text_chunk_embeddings = embedding_model.encode(text_chunks,
+                                               batch_size=32,convert_to_tensor=True)
+print(text_chunk_embeddings)
+
+
+text_chunks_and_embeddings_df = pd.DataFrame(pages_and_chunks_over_min_token_len)
+#embeddings_df_save_path = "text_chunks_and_embeddings_df.csv"
+#text_chunks_and_embeddings_df.to_csv(embeddings_df_save_path, index=False)
+
+# Import saved file and view
+#text_chunks_and_embedding_df_load = pd.read_csv(embeddings_df_save_path)
+#print(text_chunks_and_embedding_df_load.head(10))
+
 
