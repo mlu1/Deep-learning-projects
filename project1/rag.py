@@ -3,9 +3,14 @@ import fitz
 import random
 from tqdm import tqdm
 import pandas as pd
+import torch
+import numpy as np
 
 pdf_path = "human-nutrition.pdf"
 filename = pdf_path
+
+
+
 
 def text_formatter(text: str) -> str:
     cleaned_text = text.replace("\n", " ").strip() 
@@ -153,15 +158,70 @@ text_chunks = [item["sentence_chunk"] for item in pages_and_chunks_over_min_toke
 # Embed all texts in batches
 text_chunk_embeddings = embedding_model.encode(text_chunks,
                                                batch_size=32,convert_to_tensor=True)
-print(text_chunk_embeddings)
 
-
-text_chunks_and_embeddings_df = pd.DataFrame(pages_and_chunks_over_min_token_len)
+#text_chunks_and_embeddings_df = pd.DataFrame(pages_and_chunks_over_min_token_len)
 #embeddings_df_save_path = "text_chunks_and_embeddings_df.csv"
 #text_chunks_and_embeddings_df.to_csv(embeddings_df_save_path, index=False)
 
 # Import saved file and view
 #text_chunks_and_embedding_df_load = pd.read_csv(embeddings_df_save_path)
 #print(text_chunks_and_embedding_df_load.head(10))
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# Import texts and embedding df
+text_chunks_and_embedding_df = pd.read_csv("text_chunks_and_embeddings_df.csv")
+
+# Convert embedding column back to np.array (it got converted to string when it got saved to CSV)
+text_chunks_and_embedding_df["embedding"] = text_chunks_and_embedding_df["embedding"].apply(lambda x: np.fromstring(x.strip("[]"), sep=" "))
+
+# Convert texts and embedding df to list of dicts
+pages_and_chunks = text_chunks_and_embedding_df.to_dict(orient="records")
+
+# Convert embeddings to torch tensor and send to device (note: NumPy arrays are float64, torch tensors are float32 by default)
+embeddings = torch.tensor(np.array(text_chunks_and_embedding_df["embedding"].tolist()), dtype=torch.float32).to(device)
+embeddings.shape
+
+from sentence_transformers import util, SentenceTransformer
+embedding_model = SentenceTransformer(model_name_or_path="all-mpnet-base-v2",device=device) 
+
+query = "macronutrients functions"
+print(f"Query: {query}")
+
+# 2. Embed the query to the same numerical space as the text examples 
+# Note: It's important to embed your query with the same model you embedded your examples with.
+query_embedding = embedding_model.encode(query, convert_to_tensor=True)
+
+# 3. Get similarity scores with the dot product (we'll time this for fun)
+from time import perf_counter as timer
+
+start_time = timer()
+dot_scores = util.dot_score(a=query_embedding, b=embeddings)[0]
+end_time = timer()
+
+print(f"Time take to get scores on {len(embeddings)} embeddings: {end_time-start_time:.5f} seconds.")
+
+# 4. Get the top-k results (we'll keep this to 5)
+top_results_dot_product = torch.topk(dot_scores, k=5)
+
+larger_embeddings = torch.randn(100*embeddings.shape[0], 768).to(device)
+print(f"Embeddings shape: {larger_embeddings.shape}")
+
+# Perform dot product across 168,000 embeddings
+start_time = timer()
+dot_scores = util.dot_score(a=query_embedding, b=larger_embeddings)[0]
+end_time = timer()
+
+print(f"Time take to get scores on {len(larger_embeddings)} embeddings: {end_time-start_time:.5f} seconds.")
+
+import textwrap
+
+def print_wrapped(text, wrap_length=80):
+    wrapped_text = textwrap.fill(text, wrap_length)
+    print(wrapped_text)
+
+
+
+
 
 
