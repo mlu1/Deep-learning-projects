@@ -1,0 +1,292 @@
+{
+    "os": "Linux-5.15.0-102-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "heartbeatAt": "2024-05-10T03:46:59.992852",
+    "startedAt": "2024-05-10T03:46:59.790125",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/tmp2/mluleki/thesis/Deep-learning-projects/project2/rnn.py",
+    "codePathLocal": "rnn.py",
+    "codePath": "project2/rnn.py",
+    "git": {
+        "remote": "https://github.com/mlu1/Deep-learning-projects.git",
+        "commit": "dc445b277996c2b1d61a9b16c9aab77f4f5be0c3"
+    },
+    "email": "mthandemeluleki@yahoo.com",
+    "root": "/tmp2/mluleki/thesis/Deep-learning-projects",
+    "host": "clip6",
+    "username": "mmtande",
+    "executable": "/tmp2/mluleki/menv/bin/python",
+    "cpu_count": 24,
+    "cpu_count_logical": 48,
+    "cpu_freq": {
+        "current": 2083.7616250000005,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1540.281,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2102.795,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1526.098,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1710.483,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1614.836,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1656.765,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1610.334,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1878.26,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2594.59,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1621.187,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1514.153,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 933.2,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1539.841,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2384.595,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2148.23,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1617.033,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1101.234,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2543.384,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1924.963,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1663.147,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2155.796,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2559.82,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2124.473,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1630.279,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1630.035,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2586.743,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1648.064,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1371.701,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1641.993,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 491.082275390625,
+            "used": 300.1575508117676
+        }
+    },
+    "gpu": "Tesla V100-PCIE-32GB",
+    "gpu_count": 2,
+    "gpu_devices": [
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34359738368
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34359738368
+        }
+    ],
+    "memory": {
+        "total": 187.37836456298828
+    }
+}
