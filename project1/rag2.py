@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import os
 from dotenv import load_dotenv
-os.environ['OPEN_API_KEY'] = 'sk-proj-96ybTcbM9qH7wcwv4GkgT3BlbkFJBGqScPkhjVrapJiObdE0'
- # Get environment variables
+
+# Get environment variables
 OPEN_API_KEY = os.getenv('OPEN_API_KEY')
 #MODEL ='gpt-3.5-turbo'
 #MODEL = 'mixtral:8x7b'
