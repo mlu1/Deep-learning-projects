@@ -9,9 +9,6 @@ import numpy as np
 pdf_path = "human-nutrition.pdf"
 filename = pdf_path
 
-
-
-
 def text_formatter(text: str) -> str:
     cleaned_text = text.replace("\n", " ").strip() 
     return cleaned_text
@@ -221,7 +218,119 @@ def print_wrapped(text, wrap_length=80):
     print(wrapped_text)
 
 
+print(f"Query: '{query}'\n")
+print("Results:")
+# Loop through zipped together scores and indicies from torch.topk
+for score, idx in zip(top_results_dot_product[0], top_results_dot_product[1]):
+    print(f"Score: {score:.4f}")
+    # Print relevant sentence chunk (since the scores are in descending order, the most relevant chunk will be first)
+    print("Text:")
+    print_wrapped(pages_and_chunks[idx]["sentence_chunk"])
+    # Print the page number too so we can reference the textbook further (and check the results)
+    print(f"Page number: {pages_and_chunks[idx]['page_number']}")
+    print("\n")
 
 
 
+
+import torch
+
+def dot_product(vector1, vector2):
+    return torch.dot(vector1, vector2)
+
+def cosine_similarity(vector1, vector2):
+    dot_product = torch.dot(vector1, vector2)
+
+    # Get Euclidean/L2 norm of each vector (removes the magnitude, keeps direction)
+    norm_vector1 = torch.sqrt(torch.sum(vector1**2))
+    norm_vector2 = torch.sqrt(torch.sum(vector2**2))
+
+    return dot_product / (norm_vector1 * norm_vector2)
+
+# Example tensors
+vector1 = torch.tensor([1, 2, 3], dtype=torch.float32)
+vector2 = torch.tensor([1, 2, 3], dtype=torch.float32)
+vector3 = torch.tensor([4, 5, 6], dtype=torch.float32)
+vector4 = torch.tensor([-1, -2, -3], dtype=torch.float32)
+
+# Calculate dot product
+print("Dot product between vector1 and vector2:", dot_product(vector1, vector2))
+print("Dot product between vector1 and vector3:", dot_product(vector1, vector3))
+print("Dot product between vector1 and vector4:", dot_product(vector1, vector4))
+
+# Calculate cosine similarity
+print("Cosine similarity between vector1 and vector2:", cosine_similarity(vector1, vector2))
+print("Cosine similarity between vector1 and vector3:", cosine_similarity(vector1, vector3))
+print("Cosine similarity between vector1 and vector4:", cosine_similarity(vector1, vector4))
+
+
+def retrieve_relevant_resources(query: str,
+                                embeddings: torch.tensor,
+                                model: SentenceTransformer=embedding_model,
+                                n_resources_to_return: int=5,
+                                print_time: bool=True):
+    """
+    Embeds a query with model and returns top k scores and indices from embeddings.
+    """
+
+    # Embed the query
+    query_embedding = model.encode(query, 
+                                   convert_to_tensor=True) 
+
+    # Get dot product scores on embeddings
+    start_time = timer()
+    dot_scores = util.dot_score(query_embedding, embeddings)[0]
+    end_time = timer()
+
+    if print_time:
+        print(f"[INFO] Time taken to get scores on {len(embeddings)} embeddings: {end_time-start_time:.5f} seconds.")
+
+    scores, indices = torch.topk(input=dot_scores, 
+                                 k=n_resources_to_return)
+
+    return scores, indices
+
+def print_top_results_and_scores(query: str,
+                                 embeddings: torch.tensor,
+                                 pages_and_chunks: list[dict]=pages_and_chunks,
+                                 n_resources_to_return: int=5):
+    """
+    Takes a query, retrieves most relevant resources and prints them out in descending order.
+
+    Note: Requires pages_and_chunks to be formatted in a specific way (see above for reference).
+    """
+    
+    scores, indices = retrieve_relevant_resources(query=query,
+                                                  embeddings=embeddings,
+                                                  n_resources_to_return=n_resources_to_return)
+    
+    print(f"Query: {query}\n")
+    print("Results:")
+    # Loop through zipped together scores and indicies
+    for score, index in zip(scores, indices):
+        print(f"Score: {score:.4f}")
+        # Print relevant sentence chunk (since the scores are in descending order, the most relevant chunk will be first)
+        print_wrapped(pages_and_chunks[index]["sentence_chunk"])
+        # Print the page number too so we can reference the textbook further and check the results
+        print(f"Page number: {pages_and_chunks[index]['page_number']}")
+        print("\n")
+
+
+query = "symptoms of pellagra"
+
+# Get just the scores and indices of top related results
+scores, indices = retrieve_relevant_resources(query=query,
+                                              embeddings=embeddings)
+print(scores)
+print(indices)
+
+
+print_top_results_and_scores(query=query,
+                             embeddings=embeddings)
+
+
+import torch
+gpu_memory_bytes = torch.cuda.get_device_properties(0).total_memory
+gpu_memory_gb = round(gpu_memory_bytes / (2**30))
+print(f"Available GPU memory: {gpu_memory_gb} GB")
 
