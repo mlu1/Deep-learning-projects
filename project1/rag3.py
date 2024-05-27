@@ -45,7 +45,7 @@ lora_r = 64
 lora_alpha =16
 lora_dropout = 0.1
 
-use_4bit = True
+use_4bit = False
 bnb_4bit_compute_dtype="float16"
 bnb_4bit_quant_type="nft"
 use_nested_quant = False
@@ -108,8 +108,8 @@ if compute_dtype == torch.float16 and use_4bit:
 
 model =AutoModelForCausalLM.from_pretrained(
         model_name,
-        quantization_config=bnb_config
-        device_map = 'cpu')
+        quantization_config=bnb_config,
+        device_map = 'auto')
 
 model.config.use_cache = False
 model.config.pretraining_tp =1
@@ -149,8 +149,6 @@ training_arguments = TrainingArguments(
         )
 
 
-
-
 trainer = SFTTrainer(
         model = model,
         train_dataset = dataset,
@@ -164,7 +162,4 @@ trainer = SFTTrainer(
 
 
 trainer.train()
-
-
-
 
