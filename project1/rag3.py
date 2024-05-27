@@ -54,7 +54,7 @@ output_dir = "results"
 num_train_epochs =1
 
 
-fp116 = False
+fp16 = False
 bf16 = False
 
 
@@ -68,13 +68,14 @@ max_grad_norm=0.3
 learning_rate=2e-4
 weight_decay = 0.001
 
-optim = "apged_adaw_32bit"
+#optim = "apged_adaw_32bit"
+optim = "adamw_hf"
 lr_scheduler_type = "cosine"
 
 max_steps =-1
 warmup_ratio=0.03
 
-group_by_lenght = True
+group_by_length = True
 save_steps =0
 
 #SFT parameters
@@ -107,7 +108,7 @@ if compute_dtype == torch.float16 and use_4bit:
 
 model =AutoModelForCausalLM.from_pretrained(
         model_name,
-        quantization_config=bnb_config,
+        quantization_config=bnb_config
         device_map = 'cpu')
 
 model.config.use_cache = False
@@ -130,8 +131,8 @@ peft_config = LoraConfig(
 training_arguments = TrainingArguments(
         output_dir = output_dir,
         num_train_epochs = num_train_epochs,
-        per_device_train_batch_size = per_device_train_bathc_size,
-        gradient_accumulation_steps gradient_accumulation_steps,
+        per_device_train_batch_size = per_device_train_batch_size,
+        gradient_accumulation_steps=gradient_accumulation_steps,
         optim = optim,
         save_steps = save_steps,
         logging_steps = logging_steps,
@@ -146,6 +147,23 @@ training_arguments = TrainingArguments(
         lr_scheduler_type = lr_scheduler_type,
         report_to = "tensorboard"
         )
+
+
+
+
+trainer = SFTTrainer(
+        model = model,
+        train_dataset = dataset,
+        peft_config=peft_config,
+        dataset_text_field="text",
+        max_seq_length = max_seq_length,
+        tokenizer=tokenizer,
+        args = training_arguments,
+        packing = packing
+        )
+
+
+trainer.train()
 
 
 
