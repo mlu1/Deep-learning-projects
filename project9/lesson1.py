@@ -43,9 +43,29 @@ def add_number(a,b):
     return c
 d = add_number(2,7)
 
+'''
+Numpy introduction
+'''
 import numpy as np
-from numpy import random
-
-rand_value=random.randint(1,1000)
-
+rand_value=np.random.randint(1,1000)
 print(rand_value)
+print(np.random.randint(-10,10))
+print(np.array(range(1,10,2)))
+
+a_zeros = np.zeros([5,5])
+a_ones = np.ones([5,5])
+
+print(a_zeros.reshape(1,-1))
+print(a_ones.reshape(1,-1))
+print(a_ones.ravel())
+print(a_ones.flatten())
+print(np.arange(1,11,3,dtype='int'))
+
+
+'''
+Pandas introductions
+'''
+import pandas as pd
+
+df = pd.read_csv('data/Restaurants-Customers.csv.txt')
+print(df.head(10))
