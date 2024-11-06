@@ -66,6 +66,9 @@ print(np.arange(1,11,3,dtype='int'))
 Pandas introductions
 '''
 import pandas as pd
-
 df = pd.read_csv('data/Restaurants-Customers.csv.txt')
-print(df.head(10))
+print(df.head(5))
+print(df.tail(5))
+print(df.sample(5))
+index = df['Gender']=='Male'
+print(df['Gender'].value_counts())
