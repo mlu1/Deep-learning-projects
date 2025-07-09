@@ -11,16 +11,16 @@
 % ---------- Metadata ----------
 \title{Enhancing [Task/Domain] via Novel Deep Autoencoder Architectures}
 
-\author{Mluleki Mtande}
+\author{Mluleki Wenkaba Mtande}
 \affiliation{
   \institution{[Your Institution or Independent Researcher]}
   \city{}
   \country{}
 }
-\email{[your.email@example.com]}
+\email{[mlumtande@gmail.com]}
 
 \begin{abstract}
-We present a novel autoencoder-based architecture for [task/domain] that improves latent representation quality through [e.g., residual layers, contrastive objectives, curriculum noise]. Our approach is designed to address common shortcomings in traditional autoencoders such as oversmoothing and information loss in deep bottlenecks. We evaluate our model on [dataset name], demonstrating improved performance in terms of [metrics, e.g., reconstruction loss, classification accuracy] compared to strong baselines. Our work contributes [key contributions] and offers a practical path toward more expressive unsupervised representations.
+The RecSys Challenge 2025 promotes unified user modeling in e-commserce, asking participants to generate universal user representations from large-scale behavioral logs. These embeddings, built from millions of purchase, cart, and browsing events, are evaluated across multiple predictive tasks—both known and hidden—to assess their generalization ability. In this paper, we present our submission, which employs a novel autoencoder framework integrating residual connections, contrastive regularization, and curriculum noise. We highlight the practical and methodological challenges faced in developing universal representations, analyze performance across tasks, and reflect on how future RecSys challenges can further promote generalizable, robust, and application-agnostic user modeling.
 \end{abstract}
 
 \keywords{Deep Learning, Autoencoder, Representation Learning, [Domain], [Technique]}
@@ -30,21 +30,25 @@ We present a novel autoencoder-based architecture for [task/domain] that improve
 \maketitle
 
 \section{Introduction}
-\subsection{Motivation}
-[Add background, why this problem matters]
-\subsection{Problem Statement}
-[What is the core technical challenge?]
-\subsection{Contributions}
-\begin{itemize}
-  \item We propose a novel autoencoder architecture for [task].
-  \item We introduce [enhancements, e.g., contrastive loss, curriculum noise].
-  \item We conduct thorough empirical evaluation on [dataset].
-  \item We release our code at: \url{https://github.com/mlu1/Deep-learning-projects/tree/master/project17}
-\end{itemize}
-\subsection{Paper Organization}
-The paper is organized as follows: Section~\ref{sec:related} reviews related work. Section~\ref{sec:method} describes the proposed model. Experimental setup and results are detailed in Section~\ref{sec:experiments}. We conclude in Section~\ref{sec:conclusion}.
+Predictive analytics are fundamental to modern e-commerce, powering applications such as personalized recommendations, churn prediction, and propensity estimation. Traditionally, these tasks are approached independently, despite all relying on the same core resource: detailed logs of user behavior. This fragmentation can result in redundant modeling and limited generalizability.
 
-\section{Related Work}
+The RecSys Challenge 2025 \cite{recsys2025} directly addresses this issue by promoting a unified approach to behavior modeling. Organized by Synerise and an international team of academic collaborators, the challenge introduces the concept of \emph{Universal Behavioral Profiles}: compact user representations meant to capture essential patterns across diverse interactions—purchases, cart actions, page views, and search queries. The central objective is to produce embeddings that perform robustly across multiple downstream tasks, both disclosed and undisclosed, reflecting their generalization power.
+
+Participants are provided with a massive, real-world dataset containing millions of multi-type user events. Rather than optimizing for a single target, submitted embeddings are evaluated in several predictive tasks—including churn and product propensity prediction—using a composite score that aggregates performance across all tasks. This setup not only emphasizes robust, transferable representation learning, but also mirrors real-world business requirements, where unified user profiles support a range of analytics and decision-making systems.
+
+In this paper, we present our approach to the challenge, based on an advanced autoencoder architecture combining residual connections, contrastive learning, and curriculum noise. We discuss the practical challenges of universal representation learning, analyze empirical results across tasks, and reflect on the implications for future research in recommender systems and behavior modeling.
+
+\subsection{Problem Statement}
+The core problem addressed in the RecSys Challenge 2025 is the development of \emph{Universal Behavioral Profiles}: user representations that effectively encode past interactions—such as purchases, cart modifications, searches, and page visits—for large-scale e-commerce platforms. Unlike traditional approaches that train distinct models for each predictive task, the challenge requires participants to learn a single, compact embedding per user that generalizes across a range of downstream applications.
+
+Given a dataset comprising millions of multi-type user events, the objective is to construct user embeddings that maximize predictive performance not only on known tasks, such as churn and product propensity prediction, but also on undisclosed, hidden tasks provided by the organizers. The quality of these universal embeddings is measured by aggregating their performance across all evaluation tasks using a composite score.
+
+The key technical challenge lies in learning representations that are robust, transferable, and capable of capturing both broad behavioral patterns and fine-grained individual preferences. Participants must address issues of scalability, data heterogeneity, and the need for embeddings that retain generalizable information relevant to diverse business objectives.
+\subsection{Dataset}
+The dataset provided in the RecSys Challenge 2025 comprises over 168 million events generated by approximately 19 million users in a real-world e-commerce platform. Each event is timestamped and belongs to one of several categories: product purchase, add-to-cart, remove-from-cart, page visit, or search query. The data presents unique challenges, including high user and item cardinality, varying interaction frequencies, and temporal sparsity, making effective representation learning both essential and nontrivial.
+
+
+
 \label{sec:related}
 \subsection{Autoencoders in [Domain]}
 \subsection{Representation Learning Techniques}

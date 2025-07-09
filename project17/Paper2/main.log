@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  5 JUL 2025 16:06
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  9 JUL 2025 22:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1356,9 +1356,6 @@ Package hyperref Info: Link coloring OFF on input line 28.
 \openout4 = `main.out'.
 
 
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1437,9 +1434,15 @@ LaTeX Font Info:    Font shape `TU/LinLibertine(0)/b/n' will be
 LaTeX Font Info:    Font shape `TU/LinLibertine(0)/b/n' will be
 (Font)              scaled to size 10.95pt on input line 30.
 
-Overfull \hbox (8.54552pt too wide) in paragraph at lines 30--30
-\TU/LinLibertine(0)/m/n/9 We present a novel autoencoder-based architecture for
- [task/domain]
+Overfull \hbox (3.63678pt too wide) in paragraph at lines 30--30
+\TU/LinLibertine(0)/m/n/9 sentations from large-scale behavioral logs. These em
+beddings, built
+ []
+
+
+Overfull \hbox (1.57504pt too wide) in paragraph at lines 30--30
+\TU/LinLibertine(0)/m/n/9 can further promote generalizable, robust, and applic
+ation-agnostic
  []
 
 LaTeX Font Info:    Font shape `TU/LinLibertine(0)/m/n' will be
@@ -1448,9 +1451,6 @@ LaTeX Font Info:    Font shape `TU/LinLibertine(0)/b/n' will be
 (Font)              scaled to size 8.0pt on input line 30.
 LaTeX Font Info:    Font shape `TU/LinLibertine(0)/m/it' will be
 (Font)              scaled to size 8.0pt on input line 30.
-
-LaTeX Warning: Reference `TotPages' on page 1 undefined on input line 30.
-
 LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
 (Font)              scaled to size 8.30396pt on input line 30.
 LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
@@ -1463,42 +1463,52 @@ LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
 (Font)              scaled to size 8.3031pt on input line 30.
 LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
 (Font)              scaled to size 6.22733pt on input line 30.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
-(Font)              scaled to size 7.47354pt on input line 39.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
-(Font)              scaled to size 5.60515pt on input line 39.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
-(Font)              scaled to size 9.34277pt on input line 39.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
-(Font)              scaled to size 7.47421pt on input line 39.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
-(Font)              scaled to size 5.60565pt on input line 39.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
-(Font)              scaled to size 9.34099pt on input line 39.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
-(Font)              scaled to size 7.47278pt on input line 39.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
-(Font)              scaled to size 5.60458pt on input line 39.
 
-Overfull \hbox (13.77675pt too wide) in paragraph at lines 42--43
+Package natbib Warning: Citation `recsys2025' on page 1 undefined on input line
+ 35.
+
+LaTeX Font Info:    Font shape `TU/LinLibertine(0)/m/it' will be
+(Font)              scaled to size 9.0pt on input line 35.
+
+Overfull \hbox (11.01454pt too wide) in paragraph at lines 37--38
+\TU/LinLibertine(0)/m/n/9 predictive tasks—including churn and product propensi
+ty prediction—
+ []
+
+
+Overfull \hbox (4.41904pt too wide) in paragraph at lines 42--43
+\TU/LinLibertine(0)/m/n/9 modifications, searches, and page visits—for large-sc
+ale e-commerce
+ []
+
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
+(Font)              scaled to size 7.47354pt on input line 50.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
+(Font)              scaled to size 5.60515pt on input line 50.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 9.34277pt on input line 50.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 7.47421pt on input line 50.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 5.60565pt on input line 50.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 9.34099pt on input line 50.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 7.47278pt on input line 50.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 5.60458pt on input line 50.
+
+Overfull \hbox (13.77675pt too wide) in paragraph at lines 53--54
 []\TU/LinLibertine(0)/m/n/9 We release our code at: []$[][][][][] [] [] [] [][]
 [][][][] [] [][][] [] [][][][] [] [][][][] [][] [][][][][][][][] [][]
  []
 
 
-LaTeX Warning: Reference `sec:related' on page 1 undefined on input line 45.
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [1.1
 
-LaTeX Warning: Reference `sec:method' on page 1 undefined on input line 45.
-
-
-LaTeX Warning: Reference `sec:experiments' on page 1 undefined on input line 45
-.
-
-
-LaTeX Warning: Reference `sec:conclusion' on page 1 undefined on input line 45.
-
-
+]
 Processing 'acks' comment.
 \openout3 = `comment.cut'.
 
@@ -1506,49 +1516,32 @@ Processing 'acks' comment.
 Straight input of comment.cut. (comment.cut)
 No file main.bbl.
 
-Package balance Warning: You have called \balance in second column
-(balance)                Columns might not be balanced.
+Package natbib Warning: There were undefined citations.
 
-[1.1
-
-] (C:\Program Files\MiKTeX\tex/generic/stringenc\se-pdfdoc.def
+LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
+(Font)              scaled to size 9.0pt on input line 100.
+LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
+(Font)              scaled to size 7.0pt on input line 100.
+(C:\Program Files\MiKTeX\tex/generic/stringenc\se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 )
 (C:\Program Files\MiKTeX\tex/generic/stringenc\se-utf32be.def
 File: se-utf32be.def 2019/11/29 v1.12 stringenc: UTF-32BE
-)
-LaTeX Font Info:    Font shape `TU/LinLibertine(0)/m/n' will be
-(Font)              scaled to size 7.2pt on input line 89.
- [2.1] (main.aux)
+) [2.2] (main.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-LaTeX Warning: Temporary extra page added at the end. Rerun to get it removed.
-
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 6ADFE73BF24296253212A8009AB0B473;84
-(rerunfilecheck)             After:  1282CD5D904042C7DAC676A4B9E1FEA5;5217.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 9BE942AD7BC760347C04C15EACF93080;5086.
  ) 
 Here is how much of TeX's memory you used:
- 32270 strings out of 409954
- 617741 string characters out of 5785456
- 1945674 words of memory out of 5000000
- 53502 multiletter control sequences out of 15000+600000
- 566985 words of font info for 148 fonts, out of 8000000 for 9000
+ 32279 strings out of 409954
+ 617981 string characters out of 5785456
+ 1953674 words of memory out of 5000000
+ 53509 multiletter control sequences out of 15000+600000
+ 566944 words of font info for 150 fonts, out of 8000000 for 9000
  1509 hyphenation exceptions out of 8191
- 105i,11n,134p,1003b,32893s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 105i,12n,134p,1003b,32973s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (2 pages).
