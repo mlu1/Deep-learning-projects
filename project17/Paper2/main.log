@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  9 JUL 2025 22:49
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  10 JUL 2025 23:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1481,34 +1481,60 @@ Overfull \hbox (4.41904pt too wide) in paragraph at lines 42--43
 ale e-commerce
  []
 
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
-(Font)              scaled to size 7.47354pt on input line 50.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
-(Font)              scaled to size 5.60515pt on input line 50.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
-(Font)              scaled to size 9.34277pt on input line 50.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
-(Font)              scaled to size 7.47421pt on input line 50.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
-(Font)              scaled to size 5.60565pt on input line 50.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
-(Font)              scaled to size 9.34099pt on input line 50.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
-(Font)              scaled to size 7.47278pt on input line 50.
-LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
-(Font)              scaled to size 5.60458pt on input line 50.
-
-Overfull \hbox (13.77675pt too wide) in paragraph at lines 53--54
-[]\TU/LinLibertine(0)/m/n/9 We release our code at: []$[][][][][] [] [] [] [][]
-[][][][] [] [][][] [] [][][][] [] [][][][] [][] [][][][][][][][] [][]
- []
-
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [1.1
 
 ]
+
+Package natbib Warning: Citation `Hinton2006' on page 2 undefined on input line
+ 53.
+
+
+Package natbib Warning: Citation `Vincent2008' on page 2 undefined on input lin
+e 53.
+
+
+Package natbib Warning: Citation `Kingma2014' on page 2 undefined on input line
+ 53.
+
+
+Package natbib Warning: Citation `Sedhain2015' on page 2 undefined on input lin
+e 53.
+
+
+Package natbib Warning: Citation `Vincent2008' on page 2 undefined on input lin
+e 53.
+
+
+Package natbib Warning: Citation `Kingma2014' on page 2 undefined on input line
+ 53.
+
+
+Package natbib Warning: Citation `He2016ResNet' on page 2 undefined on input li
+ne 53.
+
+
+Package natbib Warning: Citation `Mao2016' on page 2 undefined on input line 53
+.
+
+
+Package natbib Warning: Citation `Oord2018' on page 2 undefined on input line 5
+5.
+
+
+Package natbib Warning: Citation `Chen2020SimCLR' on page 2 undefined on input 
+line 55.
+
+
+Package natbib Warning: Citation `Zhou2020S3Rec' on page 2 undefined on input l
+ine 55.
+
+
+Package natbib Warning: Citation `Zhan2022CLAES' on page 2 undefined on input l
+ine 55.
+
 Processing 'acks' comment.
 \openout3 = `comment.cut'.
 
@@ -1519,9 +1545,9 @@ No file main.bbl.
 Package natbib Warning: There were undefined citations.
 
 LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 100.
+(Font)              scaled to size 9.0pt on input line 89.
 LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 100.
+(Font)              scaled to size 7.0pt on input line 89.
 (C:\Program Files\MiKTeX\tex/generic/stringenc\se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 )
@@ -1533,14 +1559,14 @@ LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 9BE942AD7BC760347C04C15EACF93080;5086.
+(rerunfilecheck)             Checksum: C02EB2CE988BF496167F36A18BB7E91D;3771.
  ) 
 Here is how much of TeX's memory you used:
- 32279 strings out of 409954
- 617981 string characters out of 5785456
- 1953674 words of memory out of 5000000
- 53509 multiletter control sequences out of 15000+600000
- 566944 words of font info for 150 fonts, out of 8000000 for 9000
+ 32224 strings out of 409954
+ 615997 string characters out of 5785456
+ 1950674 words of memory out of 5000000
+ 53465 multiletter control sequences out of 15000+600000
+ 563978 words of font info for 131 fonts, out of 8000000 for 9000
  1509 hyphenation exceptions out of 8191
  105i,12n,134p,1003b,32973s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
