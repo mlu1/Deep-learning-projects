@@ -1,0 +1,150 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{10}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Chen et~al\mbox{.}(2020)]%
+        {Chen2020SimCLR}
+\bibfield{author}{\bibinfo{person}{Ting Chen}, \bibinfo{person}{Simon
+  Kornblith}, \bibinfo{person}{Mohammad Norouzi}, {and}
+  \bibinfo{person}{Geoffrey Hinton}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{A Simple Framework for Contrastive Learning of
+  Visual Representations}. In \bibinfo{booktitle}{\emph{Proceedings of the 37th
+  International Conference on Machine Learning (ICML)}}.
+  \bibinfo{pages}{1597--1607}.
+\newblock
+
+
+\bibitem[He et~al\mbox{.}(2016)]%
+        {He2016ResNet}
+\bibfield{author}{\bibinfo{person}{Kaiming He}, \bibinfo{person}{Xiangyu
+  Zhang}, \bibinfo{person}{Shaoqing Ren}, {and} \bibinfo{person}{Jian Sun}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Deep Residual Learning for Image Recognition}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the IEEE Conference on Computer
+  Vision and Pattern Recognition (CVPR)}}. \bibinfo{pages}{770--778}.
+\newblock
+
+
+\bibitem[Hinton and Salakhutdinov(2006)]%
+        {Hinton2006}
+\bibfield{author}{\bibinfo{person}{Geoffrey~E. Hinton} {and}
+  \bibinfo{person}{Ruslan~R. Salakhutdinov}.} \bibinfo{year}{2006}\natexlab{}.
+\newblock \showarticletitle{Reducing the Dimensionality of Data with Neural
+  Networks}.
+\newblock \bibinfo{journal}{\emph{Science}} \bibinfo{volume}{313},
+  \bibinfo{number}{5786} (\bibinfo{year}{2006}), \bibinfo{pages}{504--507}.
+\newblock
+
+
+\bibitem[Kingma and Welling(2014)]%
+        {Kingma2014}
+\bibfield{author}{\bibinfo{person}{Diederik~P. Kingma} {and}
+  \bibinfo{person}{Max Welling}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Auto-Encoding Variational Bayes}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:1312.6114}}
+  (\bibinfo{year}{2014}).
+\newblock
+
+
+\bibitem[Mao et~al\mbox{.}(2016)]%
+        {Mao2016}
+\bibfield{author}{\bibinfo{person}{Xiao-Jiao Mao}, \bibinfo{person}{Chunhua
+  Shen}, {and} \bibinfo{person}{Yu-Bin Yang}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Image Restoration Using Very Deep Convolutional
+  Encoder-Decoder Networks with Symmetric Skip Connections}. In
+  \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}}. \bibinfo{pages}{2802--2810}.
+\newblock
+
+
+\bibitem[Sedhain et~al\mbox{.}({[n.\,d.]})]%
+        {Sedhain2015}
+\bibfield{author}{\bibinfo{person}{Suvash Sedhain},
+  \bibinfo{person}{Aditya~Krishna Menon}, \bibinfo{person}{Scott Sanner}, {and}
+  \bibinfo{person}{Lexing Xie}.} \bibinfo{year}{[n.\,d.]}\natexlab{}.
+\newblock \showarticletitle{AutoRec: Autoencoders Meet Collaborative
+  Filtering}.
+\newblock
+
+
+\bibitem[van~den Oord et~al\mbox{.}(2018)]%
+        {Oord2018}
+\bibfield{author}{\bibinfo{person}{Aaron van~den Oord}, \bibinfo{person}{Yazhe
+  Li}, {and} \bibinfo{person}{Oriol Vinyals}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Representation Learning with Contrastive Predictive
+  Coding}. In \bibinfo{booktitle}{\emph{arXiv preprint arXiv:1807.03748}}.
+\newblock
+
+
+\bibitem[Vincent et~al\mbox{.}(2008)]%
+        {Vincent2008}
+\bibfield{author}{\bibinfo{person}{Pascal Vincent}, \bibinfo{person}{Hugo
+  Larochelle}, \bibinfo{person}{Yoshua Bengio}, {and}
+  \bibinfo{person}{Pierre-Antoine Manzagol}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Extracting and Composing Robust Features with
+  Denoising Autoencoders}. In \bibinfo{booktitle}{\emph{Proceedings of the 25th
+  International Conference on Machine Learning (ICML)}}.
+  \bibinfo{pages}{1096--1103}.
+\newblock
+
+
+\bibitem[Zhan et~al\mbox{.}(2022)]%
+        {Zhan2022CLAES}
+\bibfield{author}{\bibinfo{person}{Xiangyu Zhan}, \bibinfo{person}{Longfei Li},
+  \bibinfo{person}{Hui Li}, \bibinfo{person}{Defu Lian}, {and}
+  \bibinfo{person}{Enhong Chen}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Contrastive Self-Supervised Learning for Sequential
+  Recommendation}. In \bibinfo{booktitle}{\emph{Proceedings of the 45th
+  International ACM SIGIR Conference on Research and Development in Information
+  Retrieval (SIGIR)}}. \bibinfo{pages}{855--865}.
+\newblock
+
+
+\bibitem[Zhou et~al\mbox{.}(2020)]%
+        {Zhou2020S3Rec}
+\bibfield{author}{\bibinfo{person}{Kun Zhou}, \bibinfo{person}{Wayne~Xin Zhao},
+  \bibinfo{person}{Shuqing Bian}, \bibinfo{person}{Min-Yen Kan}, {and}
+  \bibinfo{person}{Ji-Rong Wen}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{S$^3$-Rec: Self-Supervised Learning for Sequential
+  Recommendation with Mutual Information Maximization}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 29th ACM International
+  Conference on Information and Knowledge Management (CIKM)}}.
+  \bibinfo{pages}{1893--1902}.
+\newblock
+
+
+\end{thebibliography}

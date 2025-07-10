@@ -1,0 +1,87 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 21 items.
+The style file: ACM-Reference-Format.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Database file #1: references.bib
+I was expecting an "="---line 60 of file references.bib
+ :   
+ :   booktitle = {Proceedings of the 24th International Conference on World Wide Web (WWW)},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "recsys2025"
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 9000 items.
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Warning--empty publisher in Chen2020SimCLR
+Warning--empty address in Chen2020SimCLR
+Warning--empty publisher in He2016ResNet
+Warning--empty address in He2016ResNet
+Warning--no number and no volume in Kingma2014
+Warning--page numbers missing in both pages and numpages fields in Kingma2014
+Warning--empty publisher in Mao2016
+Warning--empty address in Mao2016
+Warning--empty year in Sedhain2015
+Warning--using n.d. in Sedhain2015
+Warning--empty booktitle in Sedhain2015
+Warning--empty publisher in Sedhain2015
+Warning--empty address in Sedhain2015
+Warning--page numbers missing in both pages and numpages fields in Sedhain2015
+Warning--empty publisher in Oord2018
+Warning--empty address in Oord2018
+Warning--page numbers missing in both pages and numpages fields in Oord2018
+Warning--empty publisher in Vincent2008
+Warning--empty address in Vincent2008
+Warning--empty publisher in Zhan2022CLAES
+Warning--empty address in Zhan2022CLAES
+Warning--empty publisher in Zhou2020S3Rec
+Warning--empty address in Zhou2020S3Rec
+You've used 10 entries,
+            6273 wiz_defined-function locations,
+            1582 strings with 20280 characters,
+and the built_in function-call counts, 12132 in all, are:
+= -- 1370
+> -- 374
+< -- 0
++ -- 128
+- -- 124
+* -- 824
+:= -- 1127
+add.period$ -- 48
+call.type$ -- 10
+change.case$ -- 76
+chr.to.int$ -- 10
+cite$ -- 33
+duplicate$ -- 1162
+empty$ -- 812
+format.name$ -- 164
+if$ -- 2954
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 48
+newline$ -- 111
+num.names$ -- 70
+pop$ -- 550
+preamble$ -- 1
+purify$ -- 151
+quote$ -- 0
+skip$ -- 424
+stack$ -- 0
+substring$ -- 878
+swap$ -- 110
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 272
+warning$ -- 23
+while$ -- 59
+width$ -- 0
+write$ -- 216
+(There was 1 error message)

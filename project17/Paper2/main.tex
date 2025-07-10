@@ -56,9 +56,108 @@ Beyond autoencoders, the field of representation learning has been shaped by con
 
 \section{Proposed Method}
 \label{sec:method}
-\subsection{Architecture Overview}
-\subsection{Encoder and Decoder Design}
-\subsection{Key Enhancements}
+\subsection{Feature Engineering Pipeline}
+Our feature engineering pipeline is designed to transform raw, heterogeneous event logs into a rich set of user-level features that capture temporal dynamics, behavioral diversity, conversion tendencies, and nuanced patterns of online shopping. The main components are:
+
+\begin{itemize}
+  \item \textbf{Temporal Features:} 
+  To capture daily and weekly periodicities, we apply sine and cosine transformations to the hour-of-day and day-of-week variables, enabling the model to recognize cyclical user habits (e.g., weekend vs. weekday shopping). We extract each user’s peak activity hours and compute their activity momentum, reflecting trends in engagement over time (e.g., increasing or declining activity).
+
+  \item \textbf{Session Features:} 
+  Sessions are segmented using a 30-minute inactivity window. For each user, we calculate statistics on session duration (mean, variance), inter-session intervals, and the distribution of activity across parts of the day (morning, afternoon, evening, night). The session burst ratio quantifies how often users exhibit dense bursts of activity versus more sporadic engagement.
+
+  \item \textbf{Behavioral Features:}
+  We measure the diversity of browsing and purchasing by computing entropy and Gini coefficients over interacted categories. SKU exploration rates capture the ratio of unique items viewed to total actions, indicating novelty-seeking tendencies. Novelty-seeking itself is also directly quantified, reflecting users’ inclination to explore new content or products.
+
+  \item \textbf{Conversion Features:}
+  Conversion efficiency is evaluated through cart abandonment rates, the proportion of search queries leading to purchases, and immediate (same-session) conversion rates. Price sensitivity is measured by observing changes in purchase likelihood across price ranges.
+
+  \item \textbf{Advanced Behavioral Metrics:}
+  Beyond standard features, we introduce several novel, high-level metrics:
+    \begin{itemize}
+      \item \textit{Price Sensitivity Curve:} Models how purchase probability varies with price, using binned regression and elasticity calculations to profile value-driven behavior.
+      \item \textit{Exploration-Exploitation Balance:} Quantifies the user's balance between discovering new SKUs and revisiting familiar ones, using cumulative curves of unique SKUs explored over time.
+      \item \textit{Purchase Journey Analysis:} Analyzes the efficiency of a user’s progression from search to visit, cart, and purchase, constructing compound metrics that summarize funnel conversion effectiveness.
+      \item \textit{Session Progression Patterns:} Compares the types and frequencies of events at different phases of sessions, identifying shifts in behavior from session start to end.
+      \item \textit{Temporal Shopping Patterns:} Detects periodic shopping intervals and category-specific cycles, capturing both regular and sporadic purchasing habits.
+      \item \textit{Behavioral Segmentation:} Employs binary indicator features to identify archetypal behavioral segments (such as researchers, browsers, decisive buyers, or loyal customers), supporting downstream personalization and analysis.
+    \end{itemize}
+\end{itemize}\vspace{-1em}
+This comprehensive feature engineering pipeline ensures that the resulting user representations incorporate both granular and high-level behavioral signals, facilitating robust generalization across a diverse set of predictive tasks as required by the RecSys Challenge 2025. The inclusion of advanced metrics and segmentation enables deeper modeling of intent, preferences, and evolving user journeys in large-scale e-commerce contexts.
+\subsection{Model Architecture Overview}
+
+\begin{figure}[t]
+  \centering
+  % Replace with actual diagram or export from Figma/draw.io as PDF/PNG for submission
+  \includegraphics[width=0.9\linewidth]{autoencoder_pipeline_diagram.png}
+  \caption{Overview of the universal user profile generation pipeline. Engineered user features are transformed via a deep residual autoencoder with contrastive and noise-based regularization to yield universal embeddings.}
+  \label{fig:architecture}
+\end{figure}
+
+As shown in Figure~\ref{fig:architecture}, our pipeline begins by processing raw behavioral logs into a comprehensive set of engineered features (see Section~X.X). These features—encompassing temporal cycles, session statistics, conversion rates, and advanced behavioral metrics—form a high-dimensional input vector for each user.
+
+\textbf{Encoder:}  
+The encoder comprises a stack of four fully connected layers with dimensions [512, 256, 128, 64], each followed by batch normalization and GELU activation. Residual skip connections are added after each layer to facilitate gradient flow and retain both high-level and fine-grained information from the input features.
+
+\textbf{Latent Layer:}  
+The bottleneck layer (dimension 32 or 64, depending on hyperparameter sweep) serves as the compact universal behavioral profile for each user. This latent representation is optimized not only for input reconstruction but also for generalization across downstream tasks.
+
+\textbf{Decoder:}  
+The decoder mirrors the encoder structure, expanding the latent vector back to the original feature dimension. This reconstruction objective ensures the embedding retains as much salient information from the original behavioral data as possible.
+
+\textbf{Loss Functions:}  
+Our training objective combines three terms: (1) mean squared error (MSE) for feature reconstruction, (2) a lightweight InfoNCE contrastive loss computed between latent vectors of augmented (noisy) user feature pairs, and (3) L2 regularization on the latent embeddings. The total loss is  
+\[
+\mathcal{L}_{total} = \mathcal{L}_{rec} + \lambda_{con}\mathcal{L}_{con} + \lambda_{L2}\|\mathbf{z}\|_2^2
+\]  
+where $\lambda_{con}$ and $\lambda_{L2}$ are weighting coefficients determined via grid search.
+
+\textbf{Curriculum Noise:}  
+To improve robustness, Gaussian noise is added to the input features during training, with the noise variance annealed linearly from $\sigma=0.10$ to $\sigma=0.02$ over epochs. This encourages the autoencoder to learn stable, generalizable patterns before focusing on subtle, task-specific details.
+
+\textbf{Integration with Feature Engineering:}  
+The success of the model is closely linked to the expressiveness of the engineered features. High-level constructs—such as session progression, price sensitivity, and behavioral segmentation—not only expand the representational capacity of the latent embeddings but also promote transferability across varied prediction targets (e.g., churn, propensity, category preference). The autoencoder thus serves as a powerful information compressor, distilling hundreds of heterogeneous signals into a unified, compact profile for each user.
+
+By combining advanced feature engineering with a robust, regularized autoencoder architecture, our system produces user embeddings that meet the RecSys Challenge 2025’s goals of universal, high-utility representation.
+
+\subsection{Model Architecture Overview}
+
+\begin{figure}[t]
+  \centering
+  % Replace with actual diagram or export from Figma/draw.io as PDF/PNG for submission
+  \includegraphics[width=0.9\linewidth]{images/autoencoder_pipeline_diagram.png}
+  \caption{Overview of the universal user profile generation pipeline. Engineered user features are transformed via a deep residual autoencoder with contrastive and noise-based regularization to yield universal embeddings.}
+  \label{fig:architecture}
+\end{figure}
+
+As shown in Figure~\ref{fig:architecture}, our pipeline begins by processing raw behavioral logs into a comprehensive set of engineered features (see Section~X.X). These features—encompassing temporal cycles, session statistics, conversion rates, and advanced behavioral metrics—form a high-dimensional input vector for each user.
+
+\textbf{Encoder:}  
+The encoder comprises a stack of four fully connected layers with dimensions [512, 256, 128, 64], each followed by batch normalization and GELU activation. Residual skip connections are added after each layer to facilitate gradient flow and retain both high-level and fine-grained information from the input features.
+
+\textbf{Latent Layer:}  
+The bottleneck layer (dimension 32 or 64, depending on hyperparameter sweep) serves as the compact universal behavioral profile for each user. This latent representation is optimized not only for input reconstruction but also for generalization across downstream tasks.
+
+\textbf{Decoder:}  
+The decoder mirrors the encoder structure, expanding the latent vector back to the original feature dimension. This reconstruction objective ensures the embedding retains as much salient information from the original behavioral data as possible.
+
+\textbf{Loss Functions:}  
+Our training objective combines three terms: (1) mean squared error (MSE) for feature reconstruction, (2) a lightweight InfoNCE contrastive loss computed between latent vectors of augmented (noisy) user feature pairs, and (3) L2 regularization on the latent embeddings. The total loss is  
+\[
+\mathcal{L}_{total} = \mathcal{L}_{rec} + \lambda_{con}\mathcal{L}_{con} + \lambda_{L2}\|\mathbf{z}\|_2^2
+\]  
+where $\lambda_{con}$ and $\lambda_{L2}$ are weighting coefficients determined via grid search.
+
+\textbf{Curriculum Noise:}  
+To improve robustness, Gaussian noise is added to the input features during training, with the noise variance annealed linearly from $\sigma=0.10$ to $\sigma=0.02$ over epochs. This encourages the autoencoder to learn stable, generalizable patterns before focusing on subtle, task-specific details.
+
+\textbf{Integration with Feature Engineering:}  
+The success of the model is closely linked to the expressiveness of the engineered features. High-level constructs—such as session progression, price sensitivity, and behavioral segmentation—not only expand the representational capacity of the latent embeddings but also promote transferability across varied prediction targets (e.g., churn, propensity, category preference). The autoencoder thus serves as a powerful information compressor, distilling hundreds of heterogeneous signals into a unified, compact profile for each user.
+
+By combining advanced feature engineering with a robust, regularized autoencoder architecture, our system produces user embeddings that meet the RecSys Challenge 2025’s goals of universal, high-utility representation.
+
+
+
 \subsection{Training Strategy}
 
 \section{Experimental Setup}

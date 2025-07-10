@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  10 JUL 2025 23:08
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  11 JUL 2025 06:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1285,7 +1285,11 @@ Package: balance 1999/02/23 4.3 (PWD)
 \oldvsize=\dimen197
 )
 Excluding comment 'screenonly' Include comment 'printonly'
-Include comment 'anonsuppress' (main.aux)
+Include comment 'anonsuppress' (main.aux
+
+LaTeX Warning: Label `fig:architecture' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
@@ -1324,8 +1328,7 @@ LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
 (Font)              scaled to size 5.18944pt on input line 28.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
 
-
-(C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd
+ (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
@@ -1487,87 +1490,121 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [1.1
 
 ]
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
+(Font)              scaled to size 7.47354pt on input line 63.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(1)/m/n' will be
+(Font)              scaled to size 5.60515pt on input line 63.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 9.34277pt on input line 63.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 7.47421pt on input line 63.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 5.60565pt on input line 63.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 9.34099pt on input line 63.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 7.47278pt on input line 63.
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 5.60458pt on input line 63.
 
-Package natbib Warning: Citation `Hinton2006' on page 2 undefined on input line
- 53.
-
-
-Package natbib Warning: Citation `Vincent2008' on page 2 undefined on input lin
-e 53.
-
-
-Package natbib Warning: Citation `Kingma2014' on page 2 undefined on input line
- 53.
-
-
-Package natbib Warning: Citation `Sedhain2015' on page 2 undefined on input lin
-e 53.
-
-
-Package natbib Warning: Citation `Vincent2008' on page 2 undefined on input lin
-e 53.
-
-
-Package natbib Warning: Citation `Kingma2014' on page 2 undefined on input line
- 53.
+Overfull \hbox (4.08578pt too wide) in paragraph at lines 66--68
+[]\TU/LinLibertine(0)/b/n/9 Session Features: \TU/LinLibertine(0)/m/n/9 Session
+s are segmented using a 30-minute
+ []
 
 
-Package natbib Warning: Citation `He2016ResNet' on page 2 undefined on input li
-ne 53.
+Overfull \hbox (2.8958pt too wide) in paragraph at lines 83--84
+\TU/LinLibertine(0)/m/n/9 researchers, browsers, decisive buyers, or loyal cust
+omers),
+ []
 
 
-Package natbib Warning: Citation `Mao2016' on page 2 undefined on input line 53
-.
+Class acmart Warning: \vspace should only be used to provide space above/below 
+surrounding objects on input line 85.
+
+File: autoencoder_pipeline_diagram.png Graphic file (type bmp)
+<autoencoder_pipeline_diagram.png>
+
+Class acmart Warning: A possible image without description on input line 95.
 
 
-Package natbib Warning: Citation `Oord2018' on page 2 undefined on input line 5
-5.
+Underfull \vbox (badness 3803) has occurred while \output is active []
+
+LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
+(Font)              scaled to size 9.0pt on input line 98.
+LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
+(Font)              scaled to size 7.0pt on input line 98.
+ [2.2]
+LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
+(Font)              scaled to size 9.0pt on input line 111.
+LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
+(Font)              scaled to size 7.2pt on input line 111.
+LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
+(Font)              scaled to size 5.4pt on input line 111.
+File: images/autoencoder_pipeline_diagram.png Graphic file (type bmp)
+<images/autoencoder_pipeline_diagram.png>
 
 
-Package natbib Warning: Citation `Chen2020SimCLR' on page 2 undefined on input 
-line 55.
+Class acmart Warning: A possible image without description on input line 131.
 
-
-Package natbib Warning: Citation `Zhou2020S3Rec' on page 2 undefined on input l
-ine 55.
-
-
-Package natbib Warning: Citation `Zhan2022CLAES' on page 2 undefined on input l
-ine 55.
-
-Processing 'acks' comment.
+[3.3] Processing 'acks' comment.
 \openout3 = `comment.cut'.
 
  Comment 'acks' writing to comment.cut.
-Straight input of comment.cut. (comment.cut)
-No file main.bbl.
+Straight input of comment.cut. (comment.cut) (main.bbl
+LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
+(Font)              scaled to size 7.0pt on input line 143.
+LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
+(Font)              scaled to size 5.0pt on input line 143.
+)
 
 Package natbib Warning: There were undefined citations.
 
-LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 89.
-LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 89.
+
+Class acmart Warning: Some images may lack descriptions.
+(acmart)              ACM is committed to complying with the upcoming US ADA ht
+tps://accessiblyapp.com/accessibility-compliance/ada/ and European Accessibilit
+y Act (EAA) https://accessiblyapp.com/accessibility-compliance/eaa/ regulations
+ by actively working to ensure our publications and application services are ac
+cessible to individuals with disabilities, adhering to the WCAG guidelines to p
+rovide a seamless experience for all users, and regularly reviewing our accessi
+bility practices to maintain compliance with evolving standards. 
+(acmart)              To this end, we strongly encourage our authors to provide
+ alternative text and captions for images and multimedia content. It is also im
+portant to optimize color contrast for the visually impaired. Taking these impo
+rtant steps when creating your papers will ensure that the widest possible audi
+ence can ingest your work..
+
+
+Class acmart Warning: CCS concepts are mandatory for papers over two pages.
+
+
+Overfull \vbox (1.41357pt too high) has occurred while \output is active []
+
+
 (C:\Program Files\MiKTeX\tex/generic/stringenc\se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 )
 (C:\Program Files\MiKTeX\tex/generic/stringenc\se-utf32be.def
 File: se-utf32be.def 2019/11/29 v1.12 stringenc: UTF-32BE
-) [2.2] (main.aux)
+) [4.4] (main.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: C02EB2CE988BF496167F36A18BB7E91D;3771.
+(rerunfilecheck)             Checksum: CDCF645D18BB849D8FAFA0359FF35278;3964.
  ) 
 Here is how much of TeX's memory you used:
- 32224 strings out of 409954
- 615997 string characters out of 5785456
+ 32370 strings out of 409954
+ 620346 string characters out of 5785456
  1950674 words of memory out of 5000000
- 53465 multiletter control sequences out of 15000+600000
- 563978 words of font info for 131 fonts, out of 8000000 for 9000
+ 53590 multiletter control sequences out of 15000+600000
+ 566976 words of font info for 154 fonts, out of 8000000 for 9000
  1509 hyphenation exceptions out of 8191
- 105i,12n,134p,1003b,32973s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 105i,12n,134p,1003b,32971s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (2 pages).
+Output written on main.pdf (4 pages).
