@@ -13,21 +13,54 @@ I was expecting an "="---line 60 of file references.bib
  :   booktitle = {Proceedings of the 24th International Conference on World Wide Web (WWW)},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "recsys2025"
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
+Warning--no key, author in recsys2025
+Warning--no author, editor, organization, or key in recsys2025
+Warning--to sort, need author or key in recsys2025
 Reallocating 'glb_str_end' (item size: 4) to 20 items.
 Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
 Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Warning--no key, author in recsys2025
+Warning--no key, author in recsys2025
 Reallocating 'singl_function' (item size: 4) to 100 items.
+Warning--no key, author in recsys2025
+Warning--empty author in recsys2025
+Warning--empty publisher in Bengio2009Curriculum
+Warning--empty address in Bengio2009Curriculum
 Warning--empty publisher in Chen2020SimCLR
 Warning--empty address in Chen2020SimCLR
+Warning--empty publisher in Christoffel2022
+Warning--empty address in Christoffel2022
+Warning--page numbers missing in both pages and numpages fields in Christoffel2022
+Warning--empty publisher in Covington2016
+Warning--empty address in Covington2016
+Warning--page numbers missing in both pages and numpages fields in Covington2016
+Warning--empty publisher in Cui2018
+Warning--empty address in Cui2018
+Warning--page numbers missing in both pages and numpages fields in Cui2018
 Warning--empty publisher in He2016ResNet
 Warning--empty address in He2016ResNet
+Warning--empty publisher in Hidasi2016
+Warning--empty address in Hidasi2016
+Warning--page numbers missing in both pages and numpages fields in Hidasi2016
+Warning--empty publisher in Kang2018
+Warning--empty address in Kang2018
 Warning--no number and no volume in Kingma2014
 Warning--page numbers missing in both pages and numpages fields in Kingma2014
+Warning--empty publisher in Krasnova2018
+Warning--empty address in Krasnova2018
+Warning--page numbers missing in both pages and numpages fields in Krasnova2018
+Warning--no number and no volume in Laptev2017
+Warning--page numbers missing in both pages and numpages fields in Laptev2017
 Warning--empty publisher in Mao2016
 Warning--empty address in Mao2016
+Warning--page numbers missing in both pages and numpages fields in Quadrana2018
+Warning--empty address in Quadrana2017
+Warning--empty publisher in Rendle2010
+Warning--empty address in Rendle2010
+Warning--page numbers missing in both pages and numpages fields in Rendle2010
+Warning--no number and no volume in Sajjadi2016NoiseAnneal
 Warning--empty year in Sedhain2015
 Warning--using n.d. in Sedhain2015
 Warning--empty booktitle in Sedhain2015
@@ -39,49 +72,56 @@ Warning--empty address in Oord2018
 Warning--page numbers missing in both pages and numpages fields in Oord2018
 Warning--empty publisher in Vincent2008
 Warning--empty address in Vincent2008
+Warning--empty address in Wang2019
+Warning--empty publisher in Yang2020
+Warning--empty address in Yang2020
+Warning--page numbers missing in both pages and numpages fields in Yang2020
 Warning--empty publisher in Zhan2022CLAES
 Warning--empty address in Zhan2022CLAES
+Warning--empty publisher in Zhao2019
+Warning--empty address in Zhao2019
+Warning--page numbers missing in both pages and numpages fields in Zhao2019
 Warning--empty publisher in Zhou2020S3Rec
 Warning--empty address in Zhou2020S3Rec
-You've used 10 entries,
+You've used 27 entries,
             6273 wiz_defined-function locations,
-            1582 strings with 20280 characters,
-and the built_in function-call counts, 12132 in all, are:
-= -- 1370
-> -- 374
+            1676 strings with 23100 characters,
+and the built_in function-call counts, 30270 in all, are:
+= -- 3354
+> -- 950
 < -- 0
-+ -- 128
-- -- 124
-* -- 824
-:= -- 1127
-add.period$ -- 48
-call.type$ -- 10
-change.case$ -- 76
-chr.to.int$ -- 10
-cite$ -- 33
-duplicate$ -- 1162
-empty$ -- 812
-format.name$ -- 164
-if$ -- 2954
++ -- 320
+- -- 303
+* -- 2116
+:= -- 2798
+add.period$ -- 125
+call.type$ -- 27
+change.case$ -- 201
+chr.to.int$ -- 27
+cite$ -- 95
+duplicate$ -- 2951
+empty$ -- 2074
+format.name$ -- 407
+if$ -- 7369
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 48
-newline$ -- 111
-num.names$ -- 70
-pop$ -- 550
+missing$ -- 124
+newline$ -- 237
+num.names$ -- 182
+pop$ -- 1420
 preamble$ -- 1
-purify$ -- 151
+purify$ -- 412
 quote$ -- 0
-skip$ -- 424
+skip$ -- 1047
 stack$ -- 0
-substring$ -- 878
-swap$ -- 110
+substring$ -- 2051
+swap$ -- 238
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 272
-warning$ -- 23
-while$ -- 59
+type$ -- 726
+warning$ -- 64
+while$ -- 129
 width$ -- 0
-write$ -- 216
+write$ -- 519
 (There was 1 error message)

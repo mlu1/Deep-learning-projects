@@ -2,7 +2,7 @@
 %%% Do NOT edit. File created by BibTeX with style
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
-\begin{thebibliography}{10}
+\begin{thebibliography}{27}
 
 %%% ====================================================================
 %%% NOTE TO THE USER: you can override these defaults by providing
@@ -36,6 +36,27 @@
 \providecommand\natexlab[1]{#1}
 \providecommand\showeprint[2][]{arXiv:#2}
 
+\bibitem[rec(2025)]%
+        {recsys2025}
+ \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{RecSys Challenge 2025}.
+\newblock \bibinfo{howpublished}{\url{http://www.recsyschallenge.com/2025/}}.
+\newblock
+\newblock
+\shownote{Accessed: 2025-07-10}.
+
+
+\bibitem[Bengio et~al\mbox{.}(2009)]%
+        {Bengio2009Curriculum}
+\bibfield{author}{\bibinfo{person}{Yoshua Bengio}, \bibinfo{person}{Jérôme
+  Louradour}, \bibinfo{person}{Ronan Collobert}, {and} \bibinfo{person}{Jason
+  Weston}.} \bibinfo{year}{2009}\natexlab{}.
+\newblock \showarticletitle{Curriculum Learning}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 26th International Conference on
+  Machine Learning (ICML)}}. \bibinfo{pages}{41--48}.
+\newblock
+
+
 \bibitem[Chen et~al\mbox{.}(2020)]%
         {Chen2020SimCLR}
 \bibfield{author}{\bibinfo{person}{Ting Chen}, \bibinfo{person}{Simon
@@ -45,6 +66,36 @@
   Visual Representations}. In \bibinfo{booktitle}{\emph{Proceedings of the 37th
   International Conference on Machine Learning (ICML)}}.
   \bibinfo{pages}{1597--1607}.
+\newblock
+
+
+\bibitem[Christoffel et~al\mbox{.}(2022)]%
+        {Christoffel2022}
+\bibfield{author}{\bibinfo{person}{Florian Christoffel},
+  \bibinfo{person}{Massimo Quadrana}, {and} \bibinfo{person}{Paolo Cremonesi}.}
+  \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{User Behavioral Segmentation for E-commerce}. In
+  \bibinfo{booktitle}{\emph{RecSys}}.
+\newblock
+
+
+\bibitem[Covington et~al\mbox{.}(2016)]%
+        {Covington2016}
+\bibfield{author}{\bibinfo{person}{Paul Covington}, \bibinfo{person}{Jay
+  Adams}, {and} \bibinfo{person}{Emre Sargin}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Deep Neural Networks for YouTube Recommendations}.
+  In \bibinfo{booktitle}{\emph{RecSys}}.
+\newblock
+
+
+\bibitem[Cui et~al\mbox{.}(2018)]%
+        {Cui2018}
+\bibfield{author}{\bibinfo{person}{Lei Cui}, \bibinfo{person}{Yiqun Liu},
+  \bibinfo{person}{Min Zhang}, {and} \bibinfo{person}{Shaoping Ma}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{User Exploration and Exploitation in Personalized
+  Web Search}. In \bibinfo{booktitle}{\emph{SIGIR}}.
 \newblock
 
 
@@ -59,6 +110,17 @@
 \newblock
 
 
+\bibitem[Hidasi et~al\mbox{.}(2016)]%
+        {Hidasi2016}
+\bibfield{author}{\bibinfo{person}{Bal{\'a}zs Hidasi},
+  \bibinfo{person}{Alexandros Karatzoglou}, \bibinfo{person}{L{\'a}szl{\'o}
+  Baltrunas}, {and} \bibinfo{person}{Domonkos Tikk}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Session-based Recommendations with Recurrent Neural
+  Networks}. In \bibinfo{booktitle}{\emph{ICLR}}.
+\newblock
+
+
 \bibitem[Hinton and Salakhutdinov(2006)]%
         {Hinton2006}
 \bibfield{author}{\bibinfo{person}{Geoffrey~E. Hinton} {and}
@@ -67,6 +129,16 @@
   Networks}.
 \newblock \bibinfo{journal}{\emph{Science}} \bibinfo{volume}{313},
   \bibinfo{number}{5786} (\bibinfo{year}{2006}), \bibinfo{pages}{504--507}.
+\newblock
+
+
+\bibitem[Kang and McAuley(2018)]%
+        {Kang2018}
+\bibfield{author}{\bibinfo{person}{Wang-Cheng Kang} {and}
+  \bibinfo{person}{Julian McAuley}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Self-Attentive Sequential Recommendation}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the IEEE International Conference on
+  Data Mining (ICDM)}}. \bibinfo{pages}{197--206}.
 \newblock
 
 
@@ -80,6 +152,40 @@
 \newblock
 
 
+\bibitem[Koren et~al\mbox{.}(2009)]%
+        {Koren2009}
+\bibfield{author}{\bibinfo{person}{Yehuda Koren}, \bibinfo{person}{Robert
+  Bell}, {and} \bibinfo{person}{Chris Volinsky}.}
+  \bibinfo{year}{2009}\natexlab{}.
+\newblock \showarticletitle{Matrix Factorization Techniques for Recommender
+  Systems}.
+\newblock \bibinfo{journal}{\emph{IEEE Computer}} \bibinfo{volume}{42},
+  \bibinfo{number}{8} (\bibinfo{year}{2009}), \bibinfo{pages}{30--37}.
+\newblock
+
+
+\bibitem[Krasnova et~al\mbox{.}(2018)]%
+        {Krasnova2018}
+\bibfield{author}{\bibinfo{person}{Hanna Krasnova}, \bibinfo{person}{Benjamin
+  Fabian}, \bibinfo{person}{Nicole Veltri}, {and} \bibinfo{person}{Peter
+  Buxmann}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Why Men and Women Continue to Use Social Networking
+  Sites: The Role of Gender Differences}. In \bibinfo{booktitle}{\emph{ICIS}}.
+\newblock
+
+
+\bibitem[Laptev et~al\mbox{.}(2017)]%
+        {Laptev2017}
+\bibfield{author}{\bibinfo{person}{Nikolay Laptev}, \bibinfo{person}{Jason
+  Yosinski}, \bibinfo{person}{Li~Erran Li}, {and} \bibinfo{person}{Slawek
+  Smyl}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Time-series Extreme Event Forecasting with Neural
+  Networks at Uber}.
+\newblock \bibinfo{journal}{\emph{ICML Time Series Workshop}}
+  (\bibinfo{year}{2017}).
+\newblock
+
+
 \bibitem[Mao et~al\mbox{.}(2016)]%
         {Mao2016}
 \bibfield{author}{\bibinfo{person}{Xiao-Jiao Mao}, \bibinfo{person}{Chunhua
@@ -88,6 +194,52 @@
   Encoder-Decoder Networks with Symmetric Skip Connections}. In
   \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems
   (NeurIPS)}}. \bibinfo{pages}{2802--2810}.
+\newblock
+
+
+\bibitem[Quadrana et~al\mbox{.}(2018)]%
+        {Quadrana2018}
+\bibfield{author}{\bibinfo{person}{Massimo Quadrana}, \bibinfo{person}{Paolo
+  Cremonesi}, {and} \bibinfo{person}{Dietmar Jannach}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Sequence-Aware Recommender Systems}.
+\newblock \bibinfo{journal}{\emph{Comput. Surveys}} \bibinfo{volume}{51},
+  \bibinfo{number}{4} (\bibinfo{year}{2018}).
+\newblock
+
+
+\bibitem[Quadrana et~al\mbox{.}(2017)]%
+        {Quadrana2017}
+\bibfield{author}{\bibinfo{person}{Massimo Quadrana},
+  \bibinfo{person}{Alexandros Karatzoglou}, \bibinfo{person}{Paolo Cremonesi},
+  {and} \bibinfo{person}{Dietmar Jannach}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Personalizing Session-based Recommendations with
+  Hierarchical Recurrent Neural Networks}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 11th ACM Conference on
+  Recommender Systems (RecSys)}}. \bibinfo{publisher}{ACM},
+  \bibinfo{pages}{130--137}.
+\newblock
+
+
+\bibitem[Rendle et~al\mbox{.}(2010)]%
+        {Rendle2010}
+\bibfield{author}{\bibinfo{person}{Steffen Rendle}, \bibinfo{person}{Christoph
+  Freudenthaler}, \bibinfo{person}{Zeno Gantner}, {and} \bibinfo{person}{Lars
+  Schmidt-Thieme}.} \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{Factorizing Personalized Markov Chains for
+  Next-Basket Recommendation}. In \bibinfo{booktitle}{\emph{WWW}}.
+\newblock
+
+
+\bibitem[Sajjadi et~al\mbox{.}(2016)]%
+        {Sajjadi2016NoiseAnneal}
+\bibfield{author}{\bibinfo{person}{Mehdi Sajjadi}, \bibinfo{person}{Mehran
+  Javanmardi}, {and} \bibinfo{person}{Tolga Tasdizen}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Regularization with Stochastic Transformations and
+  Perturbations for Deep Semi-Supervised Learning}.
+\newblock \bibinfo{journal}{\emph{Advances in Neural Information Processing
+  Systems (NeurIPS)}} (\bibinfo{year}{2016}), \bibinfo{pages}{1163--1171}.
 \newblock
 
 
@@ -122,6 +274,28 @@
 \newblock
 
 
+\bibitem[Wang et~al\mbox{.}(2019)]%
+        {Wang2019}
+\bibfield{author}{\bibinfo{person}{Xiang Wang}, \bibinfo{person}{Xiangnan He},
+  \bibinfo{person}{Meng Wang}, \bibinfo{person}{Fajie Yuan}, {and}
+  \bibinfo{person}{Tat{-}Seng Chua}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Neural Graph Collaborative Filtering}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 42nd International ACM SIGIR
+  Conference on Research and Development in Information Retrieval (SIGIR)}}.
+  \bibinfo{publisher}{ACM}, \bibinfo{pages}{165--174}.
+\newblock
+
+
+\bibitem[Yang et~al\mbox{.}(2020)]%
+        {Yang2020}
+\bibfield{author}{\bibinfo{person}{Li Yang}, \bibinfo{person}{Min Zhang},
+  \bibinfo{person}{Yiqun Liu}, {and} \bibinfo{person}{Shaoping Ma}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Session-aware Recommendation with Graph Neural
+  Networks}. In \bibinfo{booktitle}{\emph{CIKM}}.
+\newblock
+
+
 \bibitem[Zhan et~al\mbox{.}(2022)]%
         {Zhan2022CLAES}
 \bibfield{author}{\bibinfo{person}{Xiangyu Zhan}, \bibinfo{person}{Longfei Li},
@@ -131,6 +305,15 @@
   Recommendation}. In \bibinfo{booktitle}{\emph{Proceedings of the 45th
   International ACM SIGIR Conference on Research and Development in Information
   Retrieval (SIGIR)}}. \bibinfo{pages}{855--865}.
+\newblock
+
+
+\bibitem[Zhao et~al\mbox{.}(2019)]%
+        {Zhao2019}
+\bibfield{author}{\bibinfo{person}{Yin Zhao}, \bibinfo{person}{Xing Xie}, {and}
+  \bibinfo{person}{Enhong Chen}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Improving Novelty and Diversity in Sequential
+  Recommendations}. In \bibinfo{booktitle}{\emph{AAAI}}.
 \newblock
 
 
