@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  16 JUL 2025 07:28
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  16 JUL 2025 07:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1483,34 +1483,28 @@ ty prediction—
 [1.1
 
 ]
-Overfull \hbox (3.03102pt too wide) in paragraph at lines 72--74
+Overfull \hbox (3.03102pt too wide) in paragraph at lines 71--73
 []\TU/LinLibertine(0)/b/n/9 Session Features. \TU/LinLibertine(0)/m/n/9 Session
 ization is performed using a 30 minute
  []
 
 
-Overfull \hbox (4.07928pt too wide) in paragraph at lines 72--74
+Overfull \hbox (4.07928pt too wide) in paragraph at lines 71--73
 \TU/LinLibertine(0)/m/n/9 inactivity threshold, a standard approach in clickstr
 eam analysis [[],
  []
 
 
-Underfull \vbox (badness 3623) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Overfull \hbox (23.602pt too wide) in paragraph at lines 78--80
-[]\TU/LinLibertine(0)/b/n/9 Conversion and Funnel Metrics. \TU/LinLibertine(0)/
-m/n/9 Following established e-commerce
- []
-
-
-Overfull \hbox (9.85478pt too wide) in paragraph at lines 84--85
+Overfull \hbox (9.85478pt too wide) in paragraph at lines 83--84
 []\TU/LinLibertine(0)/m/it/9 Price Sensitivity Curves: \TU/LinLibertine(0)/m/n/
 9 Binned regression and elasticity curves
  []
 
 
-Overfull \hbox (10.26877pt too wide) in paragraph at lines 86--87
+Overfull \hbox (10.26877pt too wide) in paragraph at lines 85--86
 []\TU/LinLibertine(0)/m/it/9 Funnel Analysis: \TU/LinLibertine(0)/m/n/9 End-to-
 end metrics for transitions from search
  []
@@ -1518,85 +1512,91 @@ end metrics for transitions from search
 File: high.png Graphic file (type bmp)
 <high.png>
 
-Class acmart Warning: A possible image without description on input line 101.
+Class acmart Warning: A possible image without description on input line 100.
+
+
+Underfull \vbox (badness 2875) has occurred while \output is active []
 
 LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 107.
+(Font)              scaled to size 9.0pt on input line 108.
 LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 107.
-[2.2]
-Overfull \hbox (6.33849pt too wide) in paragraph at lines 109--110
+(Font)              scaled to size 7.0pt on input line 108.
+ [2.2]
+Overfull \hbox (6.33849pt too wide) in paragraph at lines 108--109
 []\TU/LinLibertine(0)/m/n/9 Contrastive regularization (InfoNCE-style) [[]] act
 ively promotes
  []
 
 
-Overfull \hbox (4.64926pt too wide) in paragraph at lines 111--115
+Overfull \hbox (4.64926pt too wide) in paragraph at lines 110--114
 \TU/LinLibertine(0)/m/n/9 electronics to apparel), which drive the propensity c
 ategory task.The
  []
 
 
-Overfull \hbox (5.62953pt too wide) in paragraph at lines 111--115
+Overfull \hbox (5.62953pt too wide) in paragraph at lines 110--114
 \TU/LinLibertine(0)/m/n/9 and long‑tail exploration signals, essential for prop
 ensity SKU where
  []
 
 LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
-(Font)              scaled to size 9.0pt on input line 125.
+(Font)              scaled to size 9.0pt on input line 124.
 LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
-(Font)              scaled to size 7.2pt on input line 125.
+(Font)              scaled to size 7.2pt on input line 124.
 LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
-(Font)              scaled to size 5.4pt on input line 125.
+(Font)              scaled to size 5.4pt on input line 124.
 File: detail.png Graphic file (type bmp)
 <detail.png>
 
-Class acmart Warning: A possible image without description on input line 138.
+Class acmart Warning: A possible image without description on input line 137.
 
 
-Overfull \hbox (5.691pt too wide) in paragraph at lines 151--153
+Underfull \vbox (badness 3428) has occurred while \output is active []
+
+
+Overfull \hbox (5.691pt too wide) in paragraph at lines 150--152
 \TU/LinLibertine(0)/m/n/9 step implemented a SASRec based model [[]]. While SAS
 Rec slightly
  []
 
 
-Overfull \hbox (10.01105pt too wide) in paragraph at lines 151--153
+Overfull \hbox (10.01105pt too wide) in paragraph at lines 150--152
 \TU/LinLibertine(0)/m/n/9 propensity metrics were marginally lower than SVD (ca
 tegory: 0.7872,
  []
 
 
-Overfull \hbox (5.62pt too wide) in paragraph at lines 154--156
+Overfull \hbox (5.62pt too wide) in paragraph at lines 153--155
 []\TU/LinLibertine(1)/b/n/9 Autoencoder (Final Submission). \TU/LinLibertine(0)
 /m/n/9 The final approach employed
  []
 
 
-Overfull \hbox (3.79352pt too wide) in paragraph at lines 154--156
+Overfull \hbox (3.79352pt too wide) in paragraph at lines 153--155
 \TU/LinLibertine(0)/m/n/9 neered features and demonstrated consistent improveme
 nts on both
  []
 
 
-Overfull \hbox (1.30957pt too wide) in paragraph at lines 154--156
+Overfull \hbox (1.30957pt too wide) in paragraph at lines 153--155
 \TU/LinLibertine(0)/m/n/9 open and hidden tasks: churn (0.7325), category prope
 nsity (0.7908),
  []
 
 [3.3]
-Overfull \hbox (7.28252pt too wide) in paragraph at lines 157--159
+Overfull \hbox (7.28252pt too wide) in paragraph at lines 156--158
 \TU/LinLibertine(0)/m/n/9 and transformer based models (SASRec) excel in modeli
 ng sequences,
  []
 
 
-Overfull \hbox (1.16554pt too wide) in paragraph at lines 180--181
-\TU/LinLibertine(0)/m/n/9 bust user representations capable of performing consi
-stently across
+Overfull \hbox (2.49153pt too wide) in paragraph at lines 179--180
+\TU/LinLibertine(0)/m/n/9 ing with a deep residual autoencoder enhanced by cont
+rastive learn-
  []
 
 
-Overfull \hbox (4.41553pt too wide) in paragraph at lines 182--183
+Overfull \hbox (4.41553pt too wide) in paragraph at lines 181--182
 []\TU/LinLibertine(0)/m/n/9 Comparative results showed clear advantages over ba
 seline meth-
  []
@@ -1606,6 +1606,9 @@ LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
 (Font)              scaled to size 7.0pt on input line 43.
 LaTeX Font Info:    Font shape `TU/LinLibertine(1)/b/n' will be
 (Font)              scaled to size 5.0pt on input line 43.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [4.4])
 
 Class acmart Warning: Some images may lack descriptions.
@@ -1629,7 +1632,10 @@ Class acmart Warning: ACM reference format is mandatory
 (acmart)              \settopmatter command..
 
 
-Overfull \vbox (1.44441pt too high) has occurred while \output is active []
+Overfull \vbox (9.5pt too high) has occurred while \output is active []
+
+
+Overfull \vbox (11.16599pt too high) has occurred while \output is active []
 
 
 (C:\Program Files\MiKTeX\tex/generic/stringenc\se-pdfdoc.def
@@ -1655,6 +1661,6 @@ Here is how much of TeX's memory you used:
  53613 multiletter control sequences out of 15000+600000
  564836 words of font info for 137 fonts, out of 8000000 for 9000
  1509 hyphenation exceptions out of 8191
- 105i,13n,134p,1038b,32987s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 105i,13n,134p,1036b,32986s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (5 pages).
