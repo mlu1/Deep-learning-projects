@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  14 JUL 2025 22:45
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.10.12) (preloaded format=xelatex 2023.11.27)  16 JUL 2025 07:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1454,12 +1454,6 @@ LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
 (Font)              scaled to size 7.47278pt on input line 35.
 LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
 (Font)              scaled to size 5.60458pt on input line 35.
-
-Overfull \hbox (4.882pt too wide) in paragraph at lines 35--35
-\TU/LinLibertine(0)/m/n/9 ing. The code is available at []$[][][][][] [] [] [] 
-[][][][][][] [] [][][] [] [][][][] [] [][][][] [][] [][][][][][][][] [][]
- []
-
 LaTeX Font Info:    Font shape `TU/LinLibertine(0)/m/it' will be
 (Font)              scaled to size 9.0pt on input line 35.
 
@@ -1486,10 +1480,7 @@ Overfull \hbox (11.01454pt too wide) in paragraph at lines 42--43
 ty prediction—
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [1.1
+[1.1
 
 ]
 Overfull \hbox (3.03102pt too wide) in paragraph at lines 72--74
@@ -1502,6 +1493,9 @@ Overfull \hbox (4.07928pt too wide) in paragraph at lines 72--74
 \TU/LinLibertine(0)/m/n/9 inactivity threshold, a standard approach in clickstr
 eam analysis [[],
  []
+
+
+Underfull \vbox (badness 3623) has occurred while \output is active []
 
 
 Overfull \hbox (23.602pt too wide) in paragraph at lines 78--80
@@ -1526,14 +1520,11 @@ File: high.png Graphic file (type bmp)
 
 Class acmart Warning: A possible image without description on input line 101.
 
-
-Underfull \vbox (badness 2875) has occurred while \output is active []
-
 LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
 (Font)              scaled to size 9.0pt on input line 107.
 LaTeX Font Info:    Font shape `TU/LinBiolinum(0)/m/n' will be
 (Font)              scaled to size 7.0pt on input line 107.
- [2.2]
+[2.2]
 Overfull \hbox (6.33849pt too wide) in paragraph at lines 109--110
 []\TU/LinLibertine(0)/m/n/9 Contrastive regularization (InfoNCE-style) [[]] act
 ively promotes
@@ -1660,10 +1651,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  32377 strings out of 409954
  619334 string characters out of 5785456
- 1952674 words of memory out of 5000000
+ 1953674 words of memory out of 5000000
  53613 multiletter control sequences out of 15000+600000
  564836 words of font info for 137 fonts, out of 8000000 for 9000
  1509 hyphenation exceptions out of 8191
- 105i,13n,134p,1003b,32987s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 105i,13n,134p,1038b,32987s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (5 pages).
