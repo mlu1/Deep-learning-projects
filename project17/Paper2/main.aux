@@ -13,16 +13,14 @@
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand*\HyPL@Entry[1]{}
 \citation{recsys2025}
-\citation{Hinton2006,Vincent2008,Kingma2014,Sedhain2015}
-\citation{Vincent2008}
-\citation{Kingma2014}
-\citation{He2016ResNet,Mao2016}
 \HyPL@Entry{0<</S/D>>}
 \@writefile{toc}{\contentsline {section}{Abstract}{1}{section*.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Problem Statement}{1}{subsection.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Dataset}{1}{subsection.1.2}\protected@file@percent }
-\newlabel{sec:related}{{1.2}{1}{Dataset}{subsection.1.2}{}}
+\citation{Hinton2006,Vincent2008,Kingma2014,Sedhain2015}
+\citation{Vincent2008}
+\citation{Kingma2014}
+\citation{He2016ResNet,Mao2016}
 \citation{Oord2018,Chen2020SimCLR}
 \citation{Zhou2020S3Rec,Zhan2022CLAES}
 \citation{Quadrana2018,Christoffel2022,Covington2016,Rendle2010,Hidasi2016,Wang2019}
@@ -43,21 +41,23 @@
 \citation{He2016ResNet,Mao2016}
 \citation{Bengio2009Curriculum,Sajjadi2016NoiseAnneal}
 \citation{Oord2018,Zhou2020S3Rec}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Dataset}{2}{subsection.1.2}\protected@file@percent }
+\newlabel{sec:related}{{1.2}{2}{Dataset}{subsection.1.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}Proposed Method}{2}{section.3}\protected@file@percent }
 \newlabel{sec:method}{{3}{2}{Proposed Method}{section.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Feature Engineering Pipeline}{2}{subsection.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overview of the universal user profile generation pipeline. Engineered user features are transformed via a deep residual autoencoder with contrastive and noise based regularization to yield universal embeddings.}}{2}{figure.caption.5}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:architecture}{{1}{2}{Overview of the universal user profile generation pipeline. Engineered user features are transformed via a deep residual autoencoder with contrastive and noise based regularization to yield universal embeddings}{figure.caption.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Model Architecture Overview}{2}{subsection.3.2}\protected@file@percent }
 \citation{Oord2018}
 \citation{Quadrana2018,Christoffel2022}
-\citation{Koren2009}
-\citation{Kang2018}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overview of the universal user profile generation pipeline. Engineered user features are transformed via a deep residual autoencoder with contrastive and noise based regularization to yield universal embeddings.}}{3}{figure.caption.5}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:architecture}{{1}{3}{Overview of the universal user profile generation pipeline. Engineered user features are transformed via a deep residual autoencoder with contrastive and noise based regularization to yield universal embeddings}{figure.caption.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Enhanced pipeline for generating universal user embeddings. Raw event logs are transformed through feature engineering, encoded via a residual autoencoder with curriculum noise and contrastive regularization, and finally distilled into universal embeddings usable across multiple predictive tasks.}}{3}{figure.caption.6}\protected@file@percent }
 \newlabel{fig:architecture}{{2}{3}{Enhanced pipeline for generating universal user embeddings. Raw event logs are transformed through feature engineering, encoded via a residual autoencoder with curriculum noise and contrastive regularization, and finally distilled into universal embeddings usable across multiple predictive tasks}{figure.caption.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Results and Discussion}{3}{section.4}\protected@file@percent }
+\citation{Koren2009}
+\citation{Kang2018}
 \bibstyle{ACM-Reference-Format}
 \bibdata{references}
 \bibcite{recsys2025}{{1}{2025}{{rec}}{{}}}
@@ -75,6 +75,11 @@
 \bibcite{Krasnova2018}{{13}{2018}{{Krasnova et~al\mbox  {.}}}{{}}}
 \bibcite{Laptev2017}{{14}{2017}{{Laptev et~al\mbox  {.}}}{{}}}
 \bibcite{Mao2016}{{15}{2016}{{Mao et~al\mbox  {.}}}{{}}}
+\newlabel{sec:experiments}{{4}{4}{Results and Discussion}{section.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Performance comparison (AUROC) across open and hidden tasks.}}{4}{table.caption.7}\protected@file@percent }
+\newlabel{tab:results}{{1}{4}{Performance comparison (AUROC) across open and hidden tasks}{table.caption.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{4}{section*.9}\protected@file@percent }
 \bibcite{Quadrana2018}{{16}{2018}{{Quadrana et~al\mbox  {.}}}{{}}}
 \bibcite{Quadrana2017}{{17}{2017}{{Quadrana et~al\mbox  {.}}}{{}}}
 \bibcite{Rendle2010}{{18}{2010}{{Rendle et~al\mbox  {.}}}{{}}}
@@ -87,11 +92,6 @@
 \bibcite{Zhan2022CLAES}{{25}{2022}{{Zhan et~al\mbox  {.}}}{{}}}
 \bibcite{Zhao2019}{{26}{2019}{{Zhao et~al\mbox  {.}}}{{}}}
 \bibcite{Zhou2020S3Rec}{{27}{2020}{{Zhou et~al\mbox  {.}}}{{}}}
-\newlabel{sec:experiments}{{4}{4}{Results and Discussion}{section.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Performance comparison (AUROC) across open and hidden tasks.}}{4}{table.caption.7}\protected@file@percent }
-\newlabel{tab:results}{{1}{4}{Performance comparison (AUROC) across open and hidden tasks}{table.caption.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{4}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{4}{section*.9}\protected@file@percent }
 \newlabel{tocindent-1}{0pt}
 \newlabel{tocindent0}{0pt}
 \newlabel{tocindent1}{4.185pt}
