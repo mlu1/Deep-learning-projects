@@ -76,18 +76,9 @@ def get_best_processor(dependencies):
     
     if dependencies['PIL'] and dependencies['scikit-image'] and dependencies['scipy']:
         try:
-            from document_processor_no_cv2 import DocumentProcessor
-            from hybrid_processor_no_cv2 import HybridProcessor
+            from hybrid_processor import HybridProcessor
             logger.info("Using advanced document processor (PIL + scikit-image)")
             return HybridProcessor()
-        except ImportError:
-            pass
-    
-    if dependencies['PIL']:
-        try:
-            from simple_processor_no_cv2 import SimpleProcessor
-            logger.info("Using simple processor (PIL only)")
-            return SimpleProcessor()
         except ImportError:
             pass
     
