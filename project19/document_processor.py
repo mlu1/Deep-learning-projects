@@ -1,203 +1,214 @@
-# Barbados Document Analysis - Scanned Plans Processing
-# This solution extracts polygon boundaries and metadata from scanned land survey documents
+#!/usr/bin/env python3
+"""
+Document Processor for Land Survey Plans (No OpenCV)
+Uses PIL, scikit-image, and numpy for image processing
+"""
 
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from shapely import wkt
-from shapely.geometry import Polygon, MultiPolygon
-import os
-import glob
-import warnings
-from PIL import Image, ImageEnhance, ImageFilter
-import cv2
-import tensorflow as tf
-from tensorflow.keras import layers, models, callbacks
-from sklearn.model_selection import train_test_split
 import re
-import pytesseract
+import os
+from typing import Dict, List, Tuple, Optional, Any
+import logging
+from pathlib import Path
+from PIL import Image, ImageFilter, ImageEnhance, ImageOps
 from scipy import ndimage
-from skimage import filters, morphology, feature, measure, segmentation
-import json
+from skimage import filters, feature, morphology, measure, segmentation
+from skimage.filters import threshold_otsu, gaussian
+from skimage.feature import canny
+from skimage.morphology import binary_closing, binary_opening, disk
+from skimage.measure import find_contours, approximate_polygon
+import warnings
+warnings.filterwarnings('ignore')
 
-# Optional: Document processing libraries
-try:
-    import easyocr
-    EASYOCR_AVAILABLE = True
-except ImportError:
-    EASYOCR_AVAILABLE = False
-    print("EasyOCR not available. Install with: pip install easyocr")
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-try:
-    from skimage.draw import polygon as draw_polygon
-    from skimage import measure
-except ImportError:
-    raise ImportError("scikit-image is required: pip install scikit-image")
-
-print("Document Analysis Mode - Processing Scanned Plans")
-print("=" * 60)
-
-# --- Step 1: Document Image Preprocessing ---
 class DocumentPreprocessor:
-    """Preprocess scanned document images for better analysis"""
+    """Image preprocessing without OpenCV"""
     
-    def __init__(self):
-        self.target_dpi = 300
-        self.target_size = (2048, 2048)  # Larger size for document analysis
-    
-    def enhance_image(self, image_path):
-        """Apply preprocessing to improve document readability"""
+    def enhance_image(self, image_path: str) -> np.ndarray:
+        """Enhance image quality using PIL and scikit-image"""
         try:
-            # Load image
-            img = Image.open(image_path).convert('RGB')
-            
-            # Resize if too large
-            if max(img.size) > 3000:
-                ratio = 3000 / max(img.size)
-                new_size = (int(img.size[0] * ratio), int(img.size[1] * ratio))
-                img = img.resize(new_size, Image.Resampling.LANCZOS)
+            # Load image with PIL
+            pil_img = Image.open(image_path).convert('RGB')
             
             # Convert to numpy array
-            img_array = np.array(img)
+            img_array = np.array(pil_img)
             
-            # Apply document enhancement techniques
-            enhanced = self._apply_document_enhancement(img_array)
+            # Convert to grayscale using standard weights
+            gray = np.dot(img_array[...,:3], [0.299, 0.587, 0.114])
             
-            return enhanced
+            # Denoising using gaussian filter
+            denoised = gaussian(gray, sigma=1.0)
+            
+            # Enhance contrast using histogram equalization
+            enhanced = self._equalize_histogram(denoised)
+            
+            # Sharpen the image
+            sharpened = self._sharpen_image(enhanced)
+            
+            # Convert back to 3-channel for consistency
+            result = np.stack([sharpened, sharpened, sharpened], axis=-1)
+            
+            return result
             
         except Exception as e:
-            print(f"Error processing image {image_path}: {e}")
+            logger.error(f"Error enhancing image {image_path}: {e}")
             return None
     
-    def _apply_document_enhancement(self, img_array):
-        """Apply specific enhancements for scanned documents"""
-        # Convert to grayscale for processing
-        gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
-        
-        # Noise reduction
-        denoised = cv2.medianBlur(gray, 3)
-        
-        # Enhance contrast
-        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-        enhanced = clahe.apply(denoised)
-        
-        # Sharpen
-        kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]])
-        sharpened = cv2.filter2D(enhanced, -1, kernel)
-        
-        # Convert back to RGB
-        result = cv2.cvtColor(sharpened, cv2.COLOR_GRAY2RGB)
-        
-        return result
+    def _equalize_histogram(self, image: np.ndarray) -> np.ndarray:
+        """Histogram equalization using numpy"""
+        try:
+            # Normalize to 0-255 range
+            image_uint8 = (image * 255).astype(np.uint8)
+            
+            # Calculate histogram
+            hist, bins = np.histogram(image_uint8.flatten(), 256, [0, 256])
+            
+            # Calculate cumulative distribution function
+            cdf = hist.cumsum()
+            cdf_normalized = cdf * hist.max() / cdf.max()
+            
+            # Use linear interpolation to create the equalized image
+            equalized = np.interp(image_uint8.flatten(), bins[:-1], cdf_normalized)
+            equalized = equalized.reshape(image_uint8.shape)
+            
+            return equalized / 255.0
+            
+        except Exception as e:
+            logger.warning(f"Histogram equalization failed: {e}")
+            return image
+    
+    def _sharpen_image(self, image: np.ndarray) -> np.ndarray:
+        """Sharpen image using convolution"""
+        try:
+            # Sharpening kernel
+            kernel = np.array([[-1, -1, -1],
+                              [-1,  9, -1],
+                              [-1, -1, -1]])
+            
+            # Apply convolution
+            sharpened = ndimage.convolve(image, kernel)
+            
+            # Clip values to valid range
+            sharpened = np.clip(sharpened, 0, 1)
+            
+            return sharpened
+            
+        except Exception as e:
+            logger.warning(f"Sharpening failed: {e}")
+            return image
 
-# --- Step 2: OCR-based Metadata Extraction ---
 class MetadataExtractor:
-    """Extract text metadata from scanned documents"""
+    """Extract metadata from document images without OCR dependencies"""
     
     def __init__(self):
-        # Initialize OCR engines
-        if EASYOCR_AVAILABLE:
-            self.reader = easyocr.Reader(['en'])
-        
-        # Define field patterns for Barbados land survey documents
-        self.field_patterns = {
-            'Total Area': [
-                r'total area[:\s]+([0-9,\.]+)\s*(acres?|sq\.?\s*ft\.?|hectares?)',
-                r'area[:\s]+([0-9,\.]+)\s*(acres?|sq\.?\s*ft\.?|hectares?)',
-                r'([0-9,\.]+)\s*acres?',
-                r'([0-9,\.]+)\s*sq\.?\s*ft\.?'
-            ],
-            'Unit of Measurement': [
-                r'(acres?|sq\.?\s*ft\.?|hectares?|square\s+feet)',
-            ],
-            'Parish': [
-                r'parish[:\s]+([a-zA-Z\s]+)',
-                r'(christ church|st\.\s*michael|st\.\s*george|st\.\s*philip|st\.\s*john|st\.\s*james|st\.\s*thomas|st\.\s*joseph|st\.\s*andrew|st\.\s*peter|st\.\s*lucy)',
-            ],
-            'Surveyed For': [
-                r'surveyed for[:\s]+([a-zA-Z\s]+)',
-                r'owner[:\s]+([a-zA-Z\s]+)',
-                r'client[:\s]+([a-zA-Z\s]+)',
-            ],
-            'Certified date': [
-                r'certified[:\s]+([0-9]{1,2}[\/\-][0-9]{1,2}[\/\-][0-9]{2,4})',
-                r'date[:\s]+([0-9]{1,2}[\/\-][0-9]{1,2}[\/\-][0-9]{2,4})',
-                r'([0-9]{1,2}[\/\-][0-9]{1,2}[\/\-][0-9]{2,4})',
-            ],
-            'LT Num': [
-                r'lt\.?\s*no\.?\s*([0-9]+)',
-                r'lot\s+([0-9]+)',
-                r'plot\s+([0-9]+)',
-            ]
-        }
+        self.setup_patterns()
     
-    def extract_metadata(self, image_path):
-        """Extract metadata from document image"""
-        try:
-            # Preprocess image
-            preprocessor = DocumentPreprocessor()
-            enhanced_img = preprocessor.enhance_image(image_path)
-            
-            if enhanced_img is None:
-                return self._empty_metadata()
-            
-            # Extract text using multiple OCR methods
-            text_data = self._extract_text_multiple_methods(enhanced_img)
-            
-            # Parse metadata from text
-            metadata = self._parse_metadata_from_text(text_data)
-            
-            return metadata
-            
-        except Exception as e:
-            print(f"Error extracting metadata from {image_path}: {e}")
-            return self._empty_metadata()
+    def setup_patterns(self):
+        """Define regex patterns for survey plan metadata"""
+        
+        # Survey number patterns
+        self.survey_patterns = [
+            r"Survey\s*No[.:]\s*([A-Z0-9\-/]+)",
+            r"Survey\s*Number[.:]\s*([A-Z0-9\-/]+)",
+            r"Plan\s*No[.:]\s*([A-Z0-9\-/]+)",
+            r"S\.?\s*No[.:]\s*([A-Z0-9\-/]+)",
+            r"DP\s*([0-9]+)",  # Deposited Plan
+            r"CP\s*([0-9]+)",  # Community Plan
+            r"SP\s*([0-9]+)",  # Strata Plan
+        ]
+        
+        # Date patterns
+        self.date_patterns = [
+            r"(?:Certified|Approved|Dated?)[:\s]*([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})",
+            r"(?:Certified|Approved|Dated?)[:\s]*([0-9]{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+[0-9]{2,4})",
+            r"([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})",
+            r"([0-9]{4}[/-][0-9]{1,2}[/-][0-9]{1,2})",
+        ]
+        
+        # Area patterns
+        self.area_patterns = [
+            r"(?:Total\s*)?Area[:\s]*([0-9]+\.?[0-9]*)\s*(ha|hectares?|m²|sq\.?\s*m|acres?)",
+            r"([0-9]+\.?[0-9]*)\s*(ha|hectares?|m²|sq\.?\s*m|acres?)",
+            r"Area\s*=\s*([0-9]+\.?[0-9]*)\s*(ha|hectares?|m²|sq\.?\s*m|acres?)",
+        ]
+        
+        # Parish patterns
+        self.parish_patterns = [
+            r"Parish\s*of\s*([A-Za-z\s]+?)(?:\n|,|$)",
+            r"Parish[:\s]*([A-Za-z\s]+?)(?:\n|,|$)",
+            r"P\.?\s*of\s*([A-Za-z\s]+?)(?:\n|,|$)",
+        ]
+        
+        # LT Number patterns
+        self.lt_patterns = [
+            r"LT\s*(?:No\.?|Number)[:\s]*([A-Z0-9\-/]+)",
+            r"L\.T\.\s*([A-Z0-9\-/]+)",
+            r"Land\s*Title[:\s]*([A-Z0-9\-/]+)",
+        ]
     
-    def _extract_text_multiple_methods(self, image):
-        """Use multiple OCR methods for better accuracy"""
-        all_text = []
-        
-        # Method 1: Tesseract OCR
+    def _extract_text_simple(self, image_path: str) -> str:
+        """Simple text extraction placeholder - returns empty string"""
+        # Without OCR libraries, we can't extract text from images
+        # This would need to be replaced with actual OCR when available
+        return ""
+    
+    def _extract_text_tesseract(self, image_path: str) -> str:
+        """Extract text using Tesseract OCR if available"""
         try:
-            # Convert to PIL Image for tesseract
-            pil_img = Image.fromarray(image)
-            tesseract_text = pytesseract.image_to_string(pil_img, config='--psm 6')
-            all_text.append(tesseract_text)
+            import pytesseract
+            from PIL import Image
+            
+            img = Image.open(image_path)
+            config = '--oem 3 --psm 6 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,/:-()[]= '
+            text = pytesseract.image_to_string(img, config=config)
+            return text
+        except ImportError:
+            logger.warning("Tesseract not available")
+            return ""
         except Exception as e:
-            print(f"Tesseract OCR failed: {e}")
+            logger.error(f"Tesseract extraction failed: {e}")
+            return ""
+    
+    def _extract_text_easyocr(self, image_path: str) -> str:
+        """Extract text using EasyOCR if available"""
+        try:
+            import easyocr
+            reader = easyocr.Reader(['en'])
+            results = reader.readtext(image_path)
+            text = ' '.join([result[1] for result in results])
+            return text
+        except ImportError:
+            logger.warning("EasyOCR not available")
+            return ""
+        except Exception as e:
+            logger.error(f"EasyOCR extraction failed: {e}")
+            return ""
+    
+    def _extract_text_multiple_methods(self, image_path: str) -> str:
+        """Try multiple OCR methods"""
+        methods = [
+            ("Tesseract", self._extract_text_tesseract),
+            ("EasyOCR", self._extract_text_easyocr),
+            ("Simple", self._extract_text_simple),
+        ]
         
-        # Method 2: EasyOCR (if available)
-        if EASYOCR_AVAILABLE:
+        for method_name, method in methods:
             try:
-                easyocr_results = self.reader.readtext(image)
-                easyocr_text = ' '.join([result[1] for result in easyocr_results])
-                all_text.append(easyocr_text)
+                text = method(image_path)
+                if text and text.strip():
+                    logger.info(f"{method_name} extracted {len(text)} characters")
+                    return text
             except Exception as e:
-                print(f"EasyOCR failed: {e}")
+                logger.warning(f"{method_name} failed: {e}")
         
-        # Combine all text
-        combined_text = ' '.join(all_text).lower()
-        return combined_text
+        return ""
     
-    def _parse_metadata_from_text(self, text):
-        """Parse specific metadata fields from extracted text"""
-        metadata = self._empty_metadata()
-        
-        for field, patterns in self.field_patterns.items():
-            for pattern in patterns:
-                match = re.search(pattern, text, re.IGNORECASE)
-                if match:
-                    if field == 'Unit of Measurement':
-                        metadata[field] = match.group(0).strip()
-                    else:
-                        metadata[field] = match.group(1).strip()
-                    break
-        
-        return metadata
-    
-    def _empty_metadata(self):
-        """Return empty metadata structure"""
-        return {
+    def extract_metadata(self, image_path: str) -> Dict[str, str]:
+        """Extract metadata from image"""
+        metadata = {
             'TargetSurvey': '',
             'Certified date': '',
             'Total Area': '',
@@ -205,288 +216,180 @@ class MetadataExtractor:
             'Parish': '',
             'LT Num': ''
         }
+        
+        # Extract text using available methods
+        text = self._extract_text_multiple_methods(image_path)
+        
+        if not text:
+            logger.warning(f"No text extracted from {image_path}")
+            return metadata
+        
+        # Clean text
+        text = text.replace('\n', ' ').replace('\r', ' ')
+        text = re.sub(r'\s+', ' ', text)
+        
+        # Extract each field using regex patterns
+        metadata = self._extract_fields_from_text(text)
+        
+        return metadata
+    
+    def _extract_fields_from_text(self, text: str) -> Dict[str, str]:
+        """Extract specific fields from text using regex"""
+        metadata = {
+            'TargetSurvey': '',
+            'Certified date': '',
+            'Total Area': '',
+            'Unit of Measurement': '',
+            'Parish': '',
+            'LT Num': ''
+        }
+        
+        # Extract survey number
+        for pattern in self.survey_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                metadata['TargetSurvey'] = match.group(1).strip()
+                break
+        
+        # Extract date
+        for pattern in self.date_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                metadata['Certified date'] = match.group(1).strip()
+                break
+        
+        # Extract area
+        for pattern in self.area_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                metadata['Total Area'] = match.group(1).strip()
+                if len(match.groups()) > 1:
+                    metadata['Unit of Measurement'] = match.group(2).strip()
+                break
+        
+        # Extract parish
+        for pattern in self.parish_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                metadata['Parish'] = match.group(1).strip()
+                break
+        
+        # Extract LT number
+        for pattern in self.lt_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                metadata['LT Num'] = match.group(1).strip()
+                break
+        
+        return metadata
 
-# --- Step 3: Polygon Extraction from Scanned Plans ---
 class PolygonExtractor:
-    """Extract polygon boundaries from scanned land survey documents"""
+    """Extract polygon boundaries from documents using scikit-image"""
     
-    def __init__(self):
-        self.min_area = 1000  # Minimum area for valid polygons
-        self.max_area = 500000  # Maximum area to filter out full page detections
-    
-    def extract_polygon_from_document(self, image_path):
-        """Extract main plot boundary from scanned document"""
+    def extract_polygon_from_document(self, image_path: str) -> List[List[int]]:
+        """Extract polygon using edge detection and contour finding"""
         try:
             # Load and preprocess image
-            preprocessor = DocumentPreprocessor()
-            enhanced_img = preprocessor.enhance_image(image_path)
+            pil_img = Image.open(image_path).convert('RGB')
+            img_array = np.array(pil_img)
             
-            if enhanced_img is None:
-                return []
-            
-            # Try multiple polygon detection methods
-            polygons = []
-            
-            # Method 1: Contour detection
-            contour_polygons = self._extract_via_contours(enhanced_img)
-            polygons.extend(contour_polygons)
-            
-            # Method 2: Line detection and intersection
-            line_polygons = self._extract_via_lines(enhanced_img)
-            polygons.extend(line_polygons)
-            
-            # Method 3: Edge detection
-            edge_polygons = self._extract_via_edges(enhanced_img)
-            polygons.extend(edge_polygons)
-            
-            # Filter and select best polygon
-            best_polygon = self._select_best_polygon(polygons, enhanced_img.shape)
-            
-            return best_polygon
-            
-        except Exception as e:
-            print(f"Error extracting polygon from {image_path}: {e}")
-            return []
-    
-    def _extract_via_contours(self, image):
-        """Extract polygons using contour detection"""
-        try:
             # Convert to grayscale
-            gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+            gray = np.dot(img_array[...,:3], [0.299, 0.587, 0.114])
             
-            # Apply edge detection
-            edges = cv2.Canny(gray, 50, 150, apertureSize=3)
+            # Apply Gaussian filter to reduce noise
+            blurred = gaussian(gray, sigma=1.0)
             
-            # Morphological operations to connect broken lines
-            kernel = np.ones((3,3), np.uint8)
-            edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
+            # Edge detection using Canny
+            edges = canny(blurred, sigma=1.0, low_threshold=0.1, high_threshold=0.2)
+            
+            # Morphological operations to close gaps
+            closed = binary_closing(edges, disk(2))
             
             # Find contours
-            contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contours = find_contours(closed, 0.5)
             
-            polygons = []
-            for contour in contours:
-                # Approximate contour to polygon
-                epsilon = 0.02 * cv2.arcLength(contour, True)
-                approx = cv2.approxPolyDP(contour, epsilon, True)
-                
-                # Filter by area and number of vertices
-                area = cv2.contourArea(contour)
-                if self.min_area < area < self.max_area and len(approx) >= 4:
-                    # Convert to coordinate list
-                    coords = [(float(pt[0][0]), float(pt[0][1])) for pt in approx]
-                    polygons.append(coords)
-            
-            return polygons
-            
-        except Exception as e:
-            print(f"Contour extraction failed: {e}")
-            return []
-    
-    def _extract_via_lines(self, image):
-        """Extract polygons by detecting lines and finding intersections"""
-        try:
-            # Convert to grayscale
-            gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-            
-            # Detect lines using HoughLines
-            edges = cv2.Canny(gray, 50, 150, apertureSize=3)
-            lines = cv2.HoughLines(edges, 1, np.pi/180, threshold=100)
-            
-            if lines is None or len(lines) < 4:
+            if not contours:
                 return []
             
-            # Process lines to find rectangular boundaries
-            # This is a simplified approach - in practice, you'd need more sophisticated
-            # line intersection and polygon reconstruction algorithms
+            # Find the largest contour (likely the main boundary)
+            largest_contour = max(contours, key=len)
             
-            # For now, return empty list - this method needs more development
-            return []
+            # Approximate polygon
+            polygon = approximate_polygon(largest_contour, tolerance=2.0)
+            
+            # Convert to integer coordinates and format as list of [x, y] pairs
+            polygon_coords = [[int(point[1]), int(point[0])] for point in polygon]
+            
+            # Filter out very small polygons
+            if len(polygon_coords) < 3:
+                return []
+            
+            return polygon_coords
             
         except Exception as e:
-            print(f"Line extraction failed: {e}")
+            logger.error(f"Error extracting polygon from {image_path}: {e}")
             return []
     
-    def _extract_via_edges(self, image):
-        """Extract polygons using edge detection and morphological operations"""
+    def _extract_polygons_alternative(self, image_path: str) -> List[List[int]]:
+        """Alternative polygon extraction using threshold and watershed"""
         try:
-            # Convert to grayscale
-            gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+            # Load image
+            pil_img = Image.open(image_path).convert('RGB')
+            img_array = np.array(pil_img)
+            gray = np.dot(img_array[...,:3], [0.299, 0.587, 0.114])
             
-            # Apply Gaussian blur
-            blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+            # Apply threshold
+            threshold = threshold_otsu(gray)
+            binary = gray > threshold
             
-            # Apply adaptive threshold
-            thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-                                         cv2.THRESH_BINARY_INV, 11, 2)
+            # Remove small objects
+            cleaned = morphology.remove_small_objects(binary, min_size=1000)
             
-            # Morphological operations
-            kernel = np.ones((5,5), np.uint8)
-            opened = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
-            closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, kernel)
+            # Label connected components
+            labeled = measure.label(cleaned)
             
-            # Find contours
-            contours, _ = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            # Find properties of labeled regions
+            regions = measure.regionprops(labeled)
             
-            polygons = []
-            for contour in contours:
-                area = cv2.contourArea(contour)
-                if self.min_area < area < self.max_area:
-                    # Approximate to polygon
-                    epsilon = 0.01 * cv2.arcLength(contour, True)
-                    approx = cv2.approxPolyDP(contour, epsilon, True)
-                    
-                    if len(approx) >= 4:
-                        coords = [(float(pt[0][0]), float(pt[0][1])) for pt in approx]
-                        polygons.append(coords)
+            if not regions:
+                return []
             
-            return polygons
+            # Get the largest region
+            largest_region = max(regions, key=lambda x: x.area)
+            
+            # Get boundary coordinates
+            coords = largest_region.coords
+            
+            if len(coords) < 3:
+                return []
+            
+            # Create convex hull as simple polygon
+            from scipy.spatial import ConvexHull
+            hull = ConvexHull(coords)
+            polygon_coords = [[int(coords[i][1]), int(coords[i][0])] for i in hull.vertices]
+            
+            return polygon_coords
             
         except Exception as e:
-            print(f"Edge extraction failed: {e}")
+            logger.warning(f"Alternative polygon extraction failed: {e}")
             return []
-    
-    def _select_best_polygon(self, polygons, image_shape):
-        """Select the best polygon from candidates"""
-        if not polygons:
-            return []
-        
-        # Score polygons based on various criteria
-        scored_polygons = []
-        
-        for poly in polygons:
-            score = self._score_polygon(poly, image_shape)
-            scored_polygons.append((score, poly))
-        
-        # Sort by score and return best
-        scored_polygons.sort(reverse=True)
-        
-        if scored_polygons and scored_polygons[0][0] > 0:
-            return scored_polygons[0][1]
-        
-        return []
-    
-    def _score_polygon(self, polygon, image_shape):
-        """Score polygon based on various criteria"""
-        if len(polygon) < 4:
-            return 0
-        
-        # Convert to numpy array for calculations
-        poly_array = np.array(polygon)
-        
-        # Calculate area
-        area = cv2.contourArea(poly_array.astype(np.int32))
-        
-        # Normalize area score (prefer medium-sized polygons)
-        h, w = image_shape[:2]
-        image_area = h * w
-        area_ratio = area / image_area
-        
-        # Prefer polygons that are 5-50% of image area
-        if 0.05 < area_ratio < 0.5:
-            area_score = 1.0
-        else:
-            area_score = 0.5
-        
-        # Prefer polygons closer to center
-        center_x, center_y = w // 2, h // 2
-        poly_center_x = np.mean(poly_array[:, 0])
-        poly_center_y = np.mean(poly_array[:, 1])
-        
-        center_distance = np.sqrt((poly_center_x - center_x)**2 + (poly_center_y - center_y)**2)
-        max_distance = np.sqrt(center_x**2 + center_y**2)
-        center_score = 1.0 - (center_distance / max_distance)
-        
-        # Prefer rectangularish shapes (4-8 vertices)
-        vertex_score = 1.0 if 4 <= len(polygon) <= 8 else 0.5
-        
-        # Combine scores
-        total_score = area_score * center_score * vertex_score
-        
-        return total_score
 
-# --- Step 4: Coordinate System Conversion ---
-class CoordinateConverter:
-    """Convert pixel coordinates to geographic coordinates"""
-    
-    def __init__(self, bounds=(40600, 42600, 66500, 71000)):
-        self.bounds = bounds  # (minx, maxx, miny, maxy)
-    
-    def pixel_to_geographic(self, pixel_coords, image_shape):
-        """Convert pixel coordinates to geographic coordinates"""
-        if not pixel_coords:
-            return []
-        
-        h, w = image_shape[:2]
-        minx, maxx, miny, maxy = self.bounds
-        
-        geographic_coords = []
-        for x_pixel, y_pixel in pixel_coords:
-            # Normalize pixel coordinates to [0, 1]
-            x_norm = x_pixel / (w - 1)
-            y_norm = y_pixel / (h - 1)
-            
-            # Convert to geographic coordinates
-            x_geo = x_norm * (maxx - minx) + minx
-            y_geo = (1 - y_norm) * (maxy - miny) + miny  # Flip Y axis
-            
-            geographic_coords.append([x_geo, y_geo])
-        
-        return geographic_coords
-
-# --- Step 5: Main Document Processing Pipeline ---
 class DocumentProcessor:
-    """Main pipeline for processing scanned land survey documents"""
+    """Main document processor without OpenCV"""
     
     def __init__(self):
+        self.preprocessor = DocumentPreprocessor()
         self.metadata_extractor = MetadataExtractor()
         self.polygon_extractor = PolygonExtractor()
-        self.coordinate_converter = CoordinateConverter()
-        
-    def process_document(self, image_path, plot_id):
-        """Process a single document and extract all information"""
-        try:
-            print(f"Processing document for ID {plot_id}...")
-            
-            # Extract metadata
-            metadata = self.metadata_extractor.extract_metadata(image_path)
-            
-            # Extract polygon
-            pixel_polygon = self.polygon_extractor.extract_polygon_from_document(image_path)
-            
-            # Convert coordinates if polygon found
-            if pixel_polygon:
-                # Get image shape for coordinate conversion
-                img = Image.open(image_path)
-                image_shape = (img.height, img.width)
-                geographic_polygon = self.coordinate_converter.pixel_to_geographic(
-                    pixel_polygon, image_shape
-                )
-            else:
-                geographic_polygon = []
-            
-            # Combine results
-            result = {
-                'ID': str(plot_id),
-                'TargetSurvey': metadata.get('TargetSurvey', ''),
-                'Certified date': metadata.get('Certified date', ''),
-                'Total Area': metadata.get('Total Area', ''),
-                'Unit of Measurement': metadata.get('Unit of Measurement', ''),
-                'Parish': metadata.get('Parish', ''),
-                'LT Num': metadata.get('LT Num', ''),
-                'geometry': geographic_polygon
-            }
-            
-            return result
-            
-        except Exception as e:
-            print(f"Error processing document {image_path}: {e}")
-            return self._empty_result(plot_id)
     
-    def _empty_result(self, plot_id):
-        """Return empty result structure"""
-        return {
-            'ID': str(plot_id),
+    def process_document(self, image_path: str, plot_id: str = None) -> Dict[str, Any]:
+        """Process a single document image"""
+        
+        if plot_id is None:
+            plot_id = Path(image_path).stem
+        
+        result = {
+            'ID': plot_id,
             'TargetSurvey': '',
             'Certified date': '',
             'Total Area': '',
@@ -495,132 +398,117 @@ class DocumentProcessor:
             'LT Num': '',
             'geometry': []
         }
-
-# --- Step 6: Batch Processing for Test Set ---
-def process_test_documents(test_ids_df, image_dir="data/", output_file="submission.csv"):
-    """Process all test documents and create submission"""
-    
-    processor = DocumentProcessor()
-    results = []
-    
-    print(f"\nProcessing {len(test_ids_df)} test documents...")
-    print("=" * 60)
-    
-    successful = 0
-    failed = 0
-    
-    for idx, plot_id in enumerate(test_ids_df['ID']):
-        if idx % 10 == 0:
-            print(f"Progress: {idx}/{len(test_ids_df)} ({idx/len(test_ids_df)*100:.1f}%)")
-        
-        # Find image file
-        image_path = None
-        for pattern in [f"{plot_id}.jpg", f"anonymised_{plot_id}.jpg", f"{plot_id}.png", f"{plot_id}.pdf"]:
-            potential_path = os.path.join(image_dir, pattern)
-            if os.path.exists(potential_path):
-                image_path = potential_path
-                break
-        
-        if image_path is None:
-            print(f"Warning: No image found for ID {plot_id}")
-            result = processor._empty_result(plot_id)
-            failed += 1
-        else:
-            result = processor.process_document(image_path, plot_id)
-            if result['geometry']:
-                successful += 1
-            else:
-                failed += 1
-        
-        results.append(result)
-    
-    # Create submission DataFrame
-    submission_df = pd.DataFrame(results)
-    
-    # Ensure column order
-    column_order = ['ID', 'TargetSurvey', 'Certified date', 'Total Area',
-                   'Unit of Measurement', 'Parish', 'LT Num', 'geometry']
-    submission_df = submission_df[column_order]
-    
-    # Save submission
-    submission_df.to_csv(output_file, index=False)
-    
-    # Print summary
-    print(f"\n{'='*60}")
-    print(f"DOCUMENT PROCESSING SUMMARY")
-    print(f"{'='*60}")
-    print(f"Total documents: {len(test_ids_df)}")
-    print(f"Successful extractions: {successful}")
-    print(f"Failed extractions: {failed}")
-    print(f"Success rate: {successful/len(test_ids_df)*100:.1f}%")
-    print(f"Output saved to: {output_file}")
-    print(f"{'='*60}")
-    
-    return submission_df
-
-# --- Step 7: Visualization and Debugging ---
-def visualize_document_processing(test_ids_df, n_samples=4, image_dir="data/"):
-    """Visualize document processing results for debugging"""
-    
-    processor = DocumentProcessor()
-    sample_ids = test_ids_df['ID'].sample(n=min(n_samples, len(test_ids_df))).values
-    
-    fig, axes = plt.subplots(2, n_samples//2, figsize=(6*n_samples//2, 12))
-    if n_samples <= 2:
-        axes = axes.reshape(-1, 1)
-    
-    for idx, plot_id in enumerate(sample_ids):
-        row = idx // (n_samples//2)
-        col = idx % (n_samples//2)
-        
-        # Find image
-        image_path = None
-        for pattern in [f"{plot_id}.jpg", f"anonymised_{plot_id}.jpg", f"{plot_id}.png"]:
-            potential_path = os.path.join(image_dir, pattern)
-            if os.path.exists(potential_path):
-                image_path = potential_path
-                break
-        
-        if image_path is None:
-            axes[row, col].text(0.5, 0.5, f'No image found\nfor ID {plot_id}', 
-                               ha='center', va='center', transform=axes[row, col].transAxes)
-            axes[row, col].set_title(f'ID: {plot_id} (Missing)')
-            axes[row, col].axis('off')
-            continue
         
         try:
-            # Load and process image
-            img = Image.open(image_path).convert('RGB')
+            # Check if file exists
+            if not os.path.exists(image_path):
+                logger.error(f"Image file not found: {image_path}")
+                return result
+            
+            # Extract metadata
+            metadata = self.metadata_extractor.extract_metadata(image_path)
+            result.update(metadata)
             
             # Extract polygon
-            pixel_polygon = processor.polygon_extractor.extract_polygon_from_document(image_path)
-            
-            # Display image
-            axes[row, col].imshow(img)
-            
-            # Overlay polygon if found
-            if pixel_polygon:
-                poly_array = np.array(pixel_polygon)
-                # Close the polygon
-                if len(poly_array) > 0:
-                    poly_array = np.vstack([poly_array, poly_array[0]])
-                    axes[row, col].plot(poly_array[:, 0], poly_array[:, 1], 'r-', linewidth=2)
-                    axes[row, col].plot(poly_array[:, 0], poly_array[:, 1], 'ro', markersize=4)
-            
-            axes[row, col].set_title(f'ID: {plot_id}\n{len(pixel_polygon)} vertices found')
-            axes[row, col].axis('off')
+            polygon = self.polygon_extractor.extract_polygon_from_document(image_path)
+            if polygon:
+                result['geometry'] = polygon
+                logger.info(f"Extracted polygon with {len(polygon)} vertices")
+            else:
+                logger.warning(f"No polygon extracted from {image_path}")
             
         except Exception as e:
-            axes[row, col].text(0.5, 0.5, f'Error:\n{str(e)[:30]}...', 
-                               ha='center', va='center', transform=axes[row, col].transAxes)
-            axes[row, col].set_title(f'ID: {plot_id} (Error)')
-            axes[row, col].axis('off')
+            logger.error(f"Error processing document {image_path}: {e}")
+        
+        return result
     
-    plt.tight_layout()
-    plt.savefig('document_processing_debug.png', dpi=300, bbox_inches='tight')
-    plt.show()
+    def process_batch(self, image_dir: str, output_path: str = "submission.csv") -> None:
+        """Process multiple documents and create submission file"""
+        import pandas as pd
+        import glob
+        
+        # Find all images
+        image_patterns = ['*.jpg', '*.jpeg', '*.png', '*.tiff', '*.bmp']
+        image_files = []
+        
+        for pattern in image_patterns:
+            image_files.extend(glob.glob(os.path.join(image_dir, pattern)))
+            image_files.extend(glob.glob(os.path.join(image_dir, pattern.upper())))
+        
+        if not image_files:
+            logger.error(f"No images found in {image_dir}")
+            return
+        
+        logger.info(f"Processing {len(image_files)} images...")
+        
+        results = []
+        for image_path in image_files:
+            result = self.process_document(image_path)
+            results.append(result)
+            logger.info(f"Processed {os.path.basename(image_path)}")
+        
+        # Create DataFrame and save
+        df = pd.DataFrame(results)
+        df.to_csv(output_path, index=False)
+        logger.info(f"Saved results to {output_path}")
+
+def create_test_image(output_path: str = "test_survey.png") -> str:
+    """Create a test survey image using PIL"""
+    try:
+        # Create image using PIL
+        img = Image.new('RGB', (1000, 800), color='white')
+        
+        # We can add text using PIL if we have font support
+        # For now, just create a simple image with basic shapes
+        
+        from PIL import ImageDraw
+        draw = ImageDraw.Draw(img)
+        
+        # Draw a simple rectangle as a property boundary
+        draw.rectangle([200, 300, 700, 600], outline='black', width=3)
+        
+        # Draw some basic text (will only work if fonts are available)
+        try:
+            draw.text((50, 50), "SURVEY PLAN", fill='black')
+            draw.text((50, 100), "Survey No: DP12345", fill='black')
+            draw.text((50, 130), "Certified Date: 15/03/2023", fill='black')
+            draw.text((50, 160), "Total Area: 1.25 hectares", fill='black')
+            draw.text((50, 190), "Parish of SPRING HILL", fill='black')
+            draw.text((50, 220), "LT No: 123456789", fill='black')
+        except:
+            # If font rendering fails, continue without text
+            pass
+        
+        img.save(output_path)
+        logger.info(f"Created test image: {output_path}")
+        return output_path
+        
+    except Exception as e:
+        logger.error(f"Error creating test image: {e}")
+        return ""
 
 if __name__ == "__main__":
-    # This file should be imported and used with the test data
-    print("Document processing pipeline ready!")
-    print("Use: process_test_documents(test_ids_df) to process all test documents")
+    # Test the processor
+    processor = DocumentProcessor()
+    
+    # Create test image
+    test_image = create_test_image()
+    
+    if test_image and os.path.exists(test_image):
+        print("Testing Document Processor (No OpenCV)")
+        print("=" * 50)
+        
+        result = processor.process_document(test_image)
+        
+        print("Processing Result:")
+        for key, value in result.items():
+            if key == 'geometry':
+                geom_info = f"{len(value)} vertices" if value else "None"
+                print(f"  {key}: {geom_info}")
+            else:
+                print(f"  {key}: '{value}'")
+        
+        print("\nNote: Text extraction requires OCR libraries (pytesseract or easyocr)")
+        print("Install with: pip install pytesseract easyocr")
+    else:
+        print("Could not create test image")

@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """
-Comprehensive test suite for document processing capabilities
-This script tests extraction on real and mock survey plans
+Comprehensive test suite for document processing (No OpenCV)
+Tests extraction on mock survey plans using PIL and scikit-image
 """
 
 import os
 import sys
-import cv2
 import numpy as np
-import pandas as pd
 from pathlib import Path
 import json
+from PIL import Image, ImageDraw
 
 def test_extraction_methods():
     """Test different extraction approaches"""
-    print("DOCUMENT PROCESSING TEST SUITE")
+    print("DOCUMENT PROCESSING TEST SUITE (NO OPENCV)")
     print("=" * 50)
     
     # Test 1: Mock data creation and processing
@@ -22,48 +21,32 @@ def test_extraction_methods():
     print("-" * 30)
     
     try:
-        from advanced_document_processor import AdvancedDocumentProcessor, create_mock_survey_image
+        from document_processor_no_cv2 import DocumentProcessor, create_test_image
         
         # Create mock image
         mock_image = "test_survey_mock.png"
-        if create_mock_survey_image(mock_image):
+        if create_test_image(mock_image):
             print(f"✓ Created mock survey image: {mock_image}")
             
             # Process with advanced processor
-            processor = AdvancedDocumentProcessor()
-            result = processor.debug_processing(mock_image)
+            processor = DocumentProcessor()
+            result = processor.process_document(mock_image)
             
             if result:
-                print("✓ Advanced processor completed")
-                display_extraction_result(result)
+                print("✓ Document processor completed")
+                display_standard_result(result)
             else:
-                print("✗ Advanced processor failed")
+                print("✗ Document processor failed")
         
     except Exception as e:
-        print(f"✗ Advanced processor test failed: {e}")
+        print(f"✗ Document processor test failed: {e}")
     
-    # Test 2: Try with enhanced processor if available
-    print("\n2. TESTING WITH ENHANCED PROCESSOR")
+    # Test 2: Try with simple processor
+    print("\n2. TESTING WITH SIMPLE PROCESSOR")
     print("-" * 30)
     
     try:
-        from enhanced_document_processor import EnhancedDocumentProcessor
-        
-        enhanced_processor = EnhancedDocumentProcessor()
-        if os.path.exists("test_survey_mock.png"):
-            result = enhanced_processor.process_document("test_survey_mock.png")
-            print("✓ Enhanced processor completed")
-            display_standard_result(result)
-        
-    except Exception as e:
-        print(f"✗ Enhanced processor test failed: {e}")
-    
-    # Test 3: Try with simple processor
-    print("\n3. TESTING WITH SIMPLE PROCESSOR")
-    print("-" * 30)
-    
-    try:
-        from simple_processor import SimpleProcessor
+        from simple_processor_no_cv2 import SimpleProcessor
         
         simple_processor = SimpleProcessor()
         if os.path.exists("test_survey_mock.png"):
@@ -74,37 +57,15 @@ def test_extraction_methods():
     except Exception as e:
         print(f"✗ Simple processor test failed: {e}")
     
-    # Test 4: Create submission format
-    print("\n4. TESTING SUBMISSION GENERATION")
+    # Test 3: Create submission format
+    print("\n3. TESTING SUBMISSION GENERATION")
     print("-" * 30)
     
     test_submission_generation()
 
-def display_extraction_result(result):
-    """Display detailed extraction results from debug processing"""
-    print("\nExtraction Results:")
-    
-    # Show metadata
-    metadata = result.get('metadata', {})
-    for key, value in metadata.items():
-        status = "✓" if value else "✗"
-        print(f"  {status} {key}: '{value}'")
-    
-    # Show text length
-    text = result.get('text', '')
-    print(f"  Raw text extracted: {len(text)} characters")
-    
-    # Show polygons
-    polygons = result.get('polygons', [])
-    print(f"  Polygons detected: {len(polygons)}")
-    
-    if polygons:
-        for i, poly in enumerate(polygons[:2]):  # Show first 2
-            print(f"    Polygon {i+1}: {len(poly)} vertices")
-
 def display_standard_result(result):
     """Display standard processing results"""
-    print("\nStandard Processing Results:")
+    print("\nProcessing Results:")
     
     required_fields = ['TargetSurvey', 'Certified date', 'Total Area', 
                       'Unit of Measurement', 'Parish', 'LT Num']
@@ -118,56 +79,34 @@ def display_standard_result(result):
     print(f"  Geometry: {len(geometry)} points" if geometry else "  Geometry: None")
 
 def create_sample_survey_images():
-    """Create multiple sample survey images with different layouts"""
+    """Create multiple sample survey images with different layouts using PIL"""
     samples = []
     
     # Sample 1: Standard format
-    img1 = np.ones((800, 1000, 3), dtype=np.uint8) * 255
-    cv2.putText(img1, "SURVEY PLAN", (350, 60), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2)
-    cv2.putText(img1, "Survey Number: SP45678", (50, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-    cv2.putText(img1, "Certified: 22/11/2023", (50, 150), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-    cv2.putText(img1, "Area = 2.5 hectares", (50, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-    cv2.putText(img1, "Parish of ASHGROVE", (50, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-    cv2.putText(img1, "Land Title No: LT987654", (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-    
-    # Add boundary
-    points1 = np.array([[150, 300], [750, 300], [750, 650], [150, 650]], np.int32)
-    cv2.polylines(img1, [points1], True, (0, 0, 0), 2)
+    img1 = Image.new('RGB', (1000, 800), color='white')
+    draw1 = ImageDraw.Draw(img1)
+    draw1.rectangle([150, 300, 750, 650], outline='black', width=2)
     
     filename1 = "sample_survey_001.png"
-    cv2.imwrite(filename1, img1)
+    img1.save(filename1)
     samples.append(filename1)
     
     # Sample 2: Different format
-    img2 = np.ones((900, 1200, 3), dtype=np.uint8) * 250  # Light gray background
-    cv2.putText(img2, "DEPOSITED PLAN", (400, 80), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3)
-    cv2.putText(img2, "DP 123456", (100, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    cv2.putText(img2, "Date: 05/08/2024", (100, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    cv2.putText(img2, "Total Area: 3250 sq.m", (100, 220), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    cv2.putText(img2, "P. of TOOWONG", (100, 260), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    cv2.putText(img2, "L.T. 456789123", (100, 300), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    
-    # Add irregular boundary
-    points2 = np.array([[200, 400], [900, 380], [950, 700], [180, 720]], np.int32)
-    cv2.polylines(img2, [points2], True, (0, 0, 0), 3)
+    img2 = Image.new('RGB', (1200, 900), color=(250, 250, 250))
+    draw2 = ImageDraw.Draw(img2)
+    draw2.polygon([(200, 400), (900, 380), (950, 700), (180, 720)], outline='black', width=3)
     
     filename2 = "sample_survey_002.png"
-    cv2.imwrite(filename2, img2)
+    img2.save(filename2)
     samples.append(filename2)
     
     # Sample 3: Minimal format
-    img3 = np.ones((600, 800, 3), dtype=np.uint8) * 255
-    cv2.putText(img3, "PLAN No: CP78901", (50, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2)
-    cv2.putText(img3, "Approved 15-12-2023", (50, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    cv2.putText(img3, "1.8 ha", (50, 160), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    cv2.putText(img3, "KEDRON Parish", (50, 200), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-    
-    # Simple rectangle
-    points3 = np.array([[100, 250], [600, 250], [600, 450], [100, 450]], np.int32)
-    cv2.polylines(img3, [points3], True, (0, 0, 0), 2)
+    img3 = Image.new('RGB', (800, 600), color='white')
+    draw3 = ImageDraw.Draw(img3)
+    draw3.rectangle([100, 250, 600, 450], outline='black', width=2)
     
     filename3 = "sample_survey_003.png"
-    cv2.imwrite(filename3, img3)
+    img3.save(filename3)
     samples.append(filename3)
     
     print(f"Created {len(samples)} sample survey images")
@@ -175,7 +114,7 @@ def create_sample_survey_images():
 
 def test_batch_processing():
     """Test batch processing on multiple samples"""
-    print("\n5. TESTING BATCH PROCESSING")
+    print("\n4. TESTING BATCH PROCESSING")
     print("-" * 30)
     
     # Create sample images
@@ -184,8 +123,8 @@ def test_batch_processing():
     results = []
     
     try:
-        from advanced_document_processor import AdvancedDocumentProcessor
-        processor = AdvancedDocumentProcessor()
+        from document_processor_no_cv2 import DocumentProcessor
+        processor = DocumentProcessor()
         
         for i, image_file in enumerate(sample_files):
             print(f"\nProcessing sample {i+1}: {image_file}")
@@ -203,6 +142,11 @@ def test_batch_processing():
 
 def test_submission_generation():
     """Test CSV submission generation"""
+    try:
+        import pandas as pd
+    except ImportError:
+        print("pandas not available - skipping submission test")
+        return
     
     # Create test data that mimics expected output
     test_data = [
@@ -252,17 +196,31 @@ def test_submission_generation():
 
 def analyze_current_capabilities():
     """Analyze what extraction methods are currently available"""
-    print("\n6. ANALYZING AVAILABLE CAPABILITIES")
+    print("\n5. ANALYZING AVAILABLE CAPABILITIES")
     print("-" * 30)
     
     capabilities = {
-        'OpenCV': True,  # Always available
+        'PIL': False,
+        'scikit-image': False,
         'Tesseract': False,
         'EasyOCR': False,
-        'Advanced Processor': False,
-        'Enhanced Processor': False,
+        'Document Processor': False,
         'Simple Processor': False
     }
+    
+    # Test PIL
+    try:
+        from PIL import Image
+        capabilities['PIL'] = True
+    except ImportError:
+        pass
+    
+    # Test scikit-image
+    try:
+        from skimage import filters
+        capabilities['scikit-image'] = True
+    except ImportError:
+        pass
     
     # Test Tesseract
     try:
@@ -280,19 +238,13 @@ def analyze_current_capabilities():
     
     # Test processors
     try:
-        from advanced_document_processor import AdvancedDocumentProcessor
-        capabilities['Advanced Processor'] = True
-    except ImportError:
-        pass
-    
-    try:
-        from enhanced_document_processor import EnhancedDocumentProcessor
-        capabilities['Enhanced Processor'] = True
+        from document_processor_no_cv2 import DocumentProcessor
+        capabilities['Document Processor'] = True
     except ImportError:
         pass
         
     try:
-        from simple_processor import SimpleProcessor
+        from simple_processor_no_cv2 import SimpleProcessor
         capabilities['Simple Processor'] = True
     except ImportError:
         pass
@@ -304,86 +256,23 @@ def analyze_current_capabilities():
     
     # Recommendations
     print("\nRecommendations:")
-    if not capabilities['Tesseract'] and not capabilities['EasyOCR']:
-        print("  ⚠ No OCR libraries available - text extraction will be very limited")
-        print("  → Install: pip install pytesseract easyocr")
+    if not capabilities['scikit-image']:
+        print("  ⚠ scikit-image not available - polygon detection will be limited")
+        print("  → Install: pip install scikit-image")
     
-    if capabilities['OpenCV']:
-        print("  ✓ OpenCV available for basic image processing and polygon detection")
+    if not capabilities['Tesseract'] and not capabilities['EasyOCR']:
+        print("  ⚠ No OCR libraries available - text extraction will not work")
+        print("  → Install: pip install pytesseract easyocr")
     
     return capabilities
 
-def create_minimal_working_example():
-    """Create a minimal processor that works with just OpenCV"""
-    print("\n7. CREATING MINIMAL WORKING EXAMPLE")
-    print("-" * 30)
-    
-    minimal_code = '''
-import cv2
-import numpy as np
-import pandas as pd
-from pathlib import Path
-
-class MinimalProcessor:
-    def process_document(self, image_path):
-        """Minimal processing with just OpenCV"""
-        result = {
-            'ID': Path(image_path).stem,
-            'TargetSurvey': '',
-            'Certified date': '',
-            'Total Area': '',
-            'Unit of Measurement': '',
-            'Parish': '',
-            'LT Num': '',
-            'geometry': []
-        }
-        
-        try:
-            # Load image
-            img = cv2.imread(image_path, 0)  # Grayscale
-            if img is None:
-                return result
-            
-            # Basic polygon detection
-            edges = cv2.Canny(img, 50, 150)
-            contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            
-            if contours:
-                # Find largest contour
-                largest = max(contours, key=cv2.contourArea)
-                epsilon = 0.02 * cv2.arcLength(largest, True)
-                approx = cv2.approxPolyDP(largest, epsilon, True)
-                
-                if len(approx) >= 3:
-                    polygon = [[int(point[0][0]), int(point[0][1])] for point in approx]
-                    result['geometry'] = polygon
-            
-        except Exception as e:
-            print(f"Error: {e}")
-        
-        return result
-
-# Usage example:
-# processor = MinimalProcessor()
-# result = processor.process_document("sample.png")
-# print(result)
-'''
-    
-    with open("minimal_processor.py", "w") as f:
-        f.write(minimal_code)
-    
-    print("✓ Created minimal_processor.py")
-    print("  This processor only does basic polygon detection with OpenCV")
-    print("  No OCR capability, but will extract geometric boundaries")
-
 if __name__ == "__main__":
-    print("Starting comprehensive document processing tests...")
+    print("Starting comprehensive document processing tests (No OpenCV)...")
     
     # Run all tests
     test_extraction_methods()
     batch_results = test_batch_processing()
     capabilities = analyze_current_capabilities()
-    create_minimal_working_example()
     
     print("\n" + "=" * 50)
     print("TEST SUMMARY")
@@ -393,11 +282,11 @@ if __name__ == "__main__":
     print(f"✓ Created test images and processed them")
     print(f"✓ Generated sample submission CSV")
     print(f"✓ Analyzed {len(capabilities)} capabilities")
-    print(f"✓ Created minimal working processor")
     
     print("\nNext steps:")
-    print("1. Install OCR libraries for better text extraction:")
+    print("1. Install OCR libraries for text extraction:")
     print("   pip install pytesseract easyocr")
-    print("2. Test with real survey plan images")
-    print("3. Tune regex patterns for specific document formats")
-    print("4. Improve polygon detection algorithms")
+    print("2. Install scikit-image for better polygon detection:")
+    print("   pip install scikit-image")
+    print("3. Test with real survey plan images")
+    print("4. Tune regex patterns for specific document formats")

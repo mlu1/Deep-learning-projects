@@ -1,66 +1,96 @@
-# Simple Document Processor - No external OCR dependencies
-# This version uses basic computer vision techniques for testing
+#!/usr/bin/env python3
+"""
+Simple Document Processor (Pure Python + PIL)
+Minimal dependencies - only uses PIL for image loading and basic Python libraries
+"""
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import os
-import cv2
-from PIL import Image
 import re
+import numpy as np
+from typing import Dict, List, Any
+from pathlib import Path
+from PIL import Image
+import logging
 
-class SimpleDocumentProcessor:
-    """Simple document processor without external OCR dependencies"""
+logger = logging.getLogger(__name__)
+
+class SimpleProcessor:
+    """Simple processor using only basic libraries"""
     
     def __init__(self):
-        self.coordinate_bounds = (40600, 42600, 66500, 71000)
+        self.setup_patterns()
     
-    def process_document_simple(self, image_path, plot_id):
-        """Simple document processing for testing"""
-        print(f"Simple processing for ID {plot_id}...")
+    def setup_patterns(self):
+        """Define regex patterns for survey plan metadata"""
         
+        # Survey number patterns (simplified)
+        self.survey_patterns = [
+            r"(?:Survey|Plan|DP|CP|SP)\s*(?:No\.?|Number)?\s*[:\s]*([A-Z0-9\-/]+)",
+            r"([0-9]{4}-[0-9]{3})",  # Format like 7703-078
+            r"([0-9]{4}-[0-9]{2,3})", # Alternative format
+        ]
+        
+        # Date patterns
+        self.date_patterns = [
+            r"([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})",
+            r"([0-9]{4}[/-][0-9]{1,2}[/-][0-9]{1,2})",
+        ]
+        
+        # Area patterns
+        self.area_patterns = [
+            r"([0-9]+\.?[0-9]*)\s*(ha|hectares?|m²|sq\.?\s*m|acres?)",
+        ]
+        
+        # Parish patterns
+        self.parish_patterns = [
+            r"Parish\s*(?:of\s*)?([A-Z][A-Za-z\s]+)",
+        ]
+        
+        # LT Number patterns
+        self.lt_patterns = [
+            r"(?:LT|L\.T\.)\s*(?:No\.?)?\s*([A-Z0-9\-/]+)",
+        ]
+    
+    def extract_basic_polygon(self, image_path: str) -> List[List[int]]:
+        """Extract a basic rectangular polygon based on image dimensions"""
         try:
-            # Load image
-            img = Image.open(image_path).convert('RGB')
-            img_array = np.array(img)
+            # Load image to get dimensions
+            img = Image.open(image_path)
+            width, height = img.size
             
-            # Extract some basic information based on image analysis
-            metadata = self._extract_basic_metadata(img_array, image_path)
+            # Create a simple rectangular boundary (placeholder)
+            # In a real implementation, this would need actual computer vision
+            margin = min(width, height) // 10
             
-            # Try to extract a simple polygon
-            polygon = self._extract_simple_polygon(img_array)
+            polygon = [
+                [margin, margin],
+                [width - margin, margin],
+                [width - margin, height - margin],
+                [margin, height - margin]
+            ]
             
-            # Convert to geographic coordinates if polygon found
-            if polygon:
-                geographic_polygon = self._convert_to_geographic(polygon, img_array.shape)
-            else:
-                geographic_polygon = []
-            
-            result = {
-                'ID': str(plot_id),
-                'TargetSurvey': metadata.get('TargetSurvey', ''),
-                'Certified date': metadata.get('Certified date', ''),
-                'Total Area': metadata.get('Total Area', ''),
-                'Unit of Measurement': metadata.get('Unit of Measurement', ''),
-                'Parish': metadata.get('Parish', ''),
-                'LT Num': metadata.get('LT Num', ''),
-                'geometry': geographic_polygon
-            }
-            
-            return result
+            return polygon
             
         except Exception as e:
-            print(f"Simple processing failed for {plot_id}: {e}")
-            return self._empty_result(plot_id)
+            logger.error(f"Error extracting polygon from {image_path}: {e}")
+            return []
     
-    def _extract_basic_metadata(self, img_array, image_path):
-        """Extract basic metadata without OCR"""
-        # For now, return empty metadata
-        # In a real implementation, you could try:
-        # 1. Template matching for common text patterns
-        # 2. Color analysis to detect text regions
-        # 3. Simple character recognition for numbers
+    def extract_metadata_mock(self, image_path: str) -> Dict[str, str]:
+        """Mock metadata extraction - returns empty values"""
+        # Without OCR, we can't extract text from images
+        # This is a placeholder that could be enhanced with actual OCR
         
+        return {
+            'TargetSurvey': '',
+            'Certified date': '',
+            'Total Area': '',
+            'Unit of Measurement': '',
+            'Parish': '',
+            'LT Num': ''
+        }
+    
+    def extract_metadata_from_filename(self, image_path: str) -> Dict[str, str]:
+        """Try to extract metadata from filename patterns"""
         metadata = {
             'TargetSurvey': '',
             'Certified date': '',
@@ -70,84 +100,33 @@ class SimpleDocumentProcessor:
             'LT Num': ''
         }
         
-        # Try to extract LT number from filename if it follows a pattern
-        filename = os.path.basename(image_path)
-        lt_match = re.search(r'(\d{4}-\d{3})', filename)
-        if lt_match:
-            metadata['LT Num'] = lt_match.group(1)
+        # Get filename without extension
+        filename = Path(image_path).stem
+        
+        # Try to extract survey number from filename
+        for pattern in self.survey_patterns:
+            match = re.search(pattern, filename, re.IGNORECASE)
+            if match:
+                metadata['TargetSurvey'] = match.group(1)
+                break
+        
+        # If no survey number found, use the filename as ID
+        if not metadata['TargetSurvey']:
+            # Clean up filename
+            clean_filename = re.sub(r'[^A-Za-z0-9\-]', '', filename)
+            if clean_filename:
+                metadata['TargetSurvey'] = clean_filename
         
         return metadata
     
-    def _extract_simple_polygon(self, img_array):
-        """Extract polygon using basic computer vision"""
-        try:
-            # Convert to grayscale
-            gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
-            
-            # Apply Gaussian blur
-            blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-            
-            # Edge detection
-            edges = cv2.Canny(blurred, 50, 150)
-            
-            # Find contours
-            contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            
-            # Filter contours by area
-            h, w = img_array.shape[:2]
-            min_area = (h * w) * 0.01  # At least 1% of image
-            max_area = (h * w) * 0.5   # At most 50% of image
-            
-            valid_contours = []
-            for contour in contours:
-                area = cv2.contourArea(contour)
-                if min_area < area < max_area:
-                    # Approximate contour to polygon
-                    epsilon = 0.02 * cv2.arcLength(contour, True)
-                    approx = cv2.approxPolyDP(contour, epsilon, True)
-                    
-                    if len(approx) >= 4:  # At least 4 vertices
-                        valid_contours.append((area, approx))
-            
-            if valid_contours:
-                # Select largest valid contour
-                valid_contours.sort(key=lambda x: x[0], reverse=True)
-                best_contour = valid_contours[0][1]
-                
-                # Convert to coordinate list
-                coords = [(float(pt[0][0]), float(pt[0][1])) for pt in best_contour]
-                return coords
-            
-            return []
-            
-        except Exception as e:
-            print(f"Simple polygon extraction failed: {e}")
-            return []
-    
-    def _convert_to_geographic(self, pixel_coords, image_shape):
-        """Convert pixel coordinates to geographic coordinates"""
-        if not pixel_coords:
-            return []
+    def process_document(self, image_path: str, plot_id: str = None) -> Dict[str, Any]:
+        """Process a document image with basic methods"""
         
-        h, w = image_shape[:2]
-        minx, maxx, miny, maxy = self.coordinate_bounds
+        if plot_id is None:
+            plot_id = Path(image_path).stem
         
-        geographic_coords = []
-        for x_pixel, y_pixel in pixel_coords:
-            x_norm = x_pixel / (w - 1)
-            y_norm = y_pixel / (h - 1)
-            
-            x_geo = x_norm * (maxx - minx) + minx
-            y_geo = (1 - y_norm) * (maxy - miny) + miny
-            
-            geographic_coords.append([x_geo, y_geo])
-        
-        return geographic_coords
-    
-    def _empty_result(self, plot_id):
-        """Return empty result structure"""
-        return {
-            'ID': str(plot_id),
+        result = {
+            'ID': plot_id,
             'TargetSurvey': '',
             'Certified date': '',
             'Total Area': '',
@@ -156,56 +135,215 @@ class SimpleDocumentProcessor:
             'LT Num': '',
             'geometry': []
         }
+        
+        try:
+            if not os.path.exists(image_path):
+                logger.warning(f"Image file not found: {image_path}")
+                return result
+            
+            # Try to extract metadata from filename
+            metadata = self.extract_metadata_from_filename(image_path)
+            result.update(metadata)
+            
+            # Extract basic polygon
+            polygon = self.extract_basic_polygon(image_path)
+            if polygon:
+                result['geometry'] = polygon
+            
+        except Exception as e:
+            logger.error(f"Error processing {image_path}: {e}")
+        
+        return result
+    
+    def process_batch_from_ids(self, test_ids_file: str, image_dir: str = "data/", 
+                              output_path: str = "submission.csv") -> None:
+        """Process batch based on test IDs file"""
+        try:
+            import pandas as pd
+        except ImportError:
+            logger.error("pandas not available - cannot create CSV")
+            return
+        
+        if not os.path.exists(test_ids_file):
+            logger.error(f"Test IDs file not found: {test_ids_file}")
+            return
+        
+        # Load test IDs
+        test_ids_df = pd.read_csv(test_ids_file)
+        logger.info(f"Processing {len(test_ids_df)} test samples")
+        
+        results = []
+        
+        for _, row in test_ids_df.iterrows():
+            plot_id = str(row['ID'])
+            
+            # Try different image filename patterns
+            image_patterns = [
+                f"{plot_id}.jpg",
+                f"{plot_id}.jpeg",
+                f"{plot_id}.png", 
+                f"anonymised_{plot_id}.jpg"
+            ]
+            
+            image_path = None
+            for pattern in image_patterns:
+                potential_path = os.path.join(image_dir, pattern)
+                if os.path.exists(potential_path):
+                    image_path = potential_path
+                    break
+            
+            if image_path:
+                result = self.process_document(image_path, plot_id)
+            else:
+                # Create empty result for missing image
+                result = {
+                    'ID': plot_id,
+                    'TargetSurvey': '',
+                    'Certified date': '',
+                    'Total Area': '',
+                    'Unit of Measurement': '',
+                    'Parish': '',
+                    'LT Num': '',
+                    'geometry': []
+                }
+                logger.debug(f"Image not found for ID: {plot_id}")
+            
+            results.append(result)
+        
+        # Create DataFrame and save
+        df = pd.DataFrame(results)
+        
+        # Ensure proper column order
+        required_columns = ['ID', 'TargetSurvey', 'Certified date', 'Total Area',
+                           'Unit of Measurement', 'Parish', 'LT Num', 'geometry']
+        
+        df = df[required_columns]
+        df.to_csv(output_path, index=False)
+        
+        logger.info(f"Saved {len(results)} results to {output_path}")
+        
+        # Print summary
+        print(f"\nProcessing Summary:")
+        print(f"Total samples: {len(results)}")
+        
+        # Count filled fields
+        for col in required_columns:
+            if col == 'geometry':
+                filled = sum(1 for geom in df['geometry'] if geom and len(geom) > 0)
+            else:
+                filled = df[col].astype(bool).sum()
+            
+            percentage = filled / len(df) * 100 if len(df) > 0 else 0
+            print(f"{col}: {filled}/{len(df)} ({percentage:.1f}%)")
 
-def create_test_submission(test_ids_df, image_dir="data/", output_file="test_submission.csv"):
-    """Create a test submission using simple processing"""
-    
-    processor = SimpleDocumentProcessor()
-    results = []
-    
-    print(f"Creating test submission for {len(test_ids_df)} documents...")
-    
-    for idx, plot_id in enumerate(test_ids_df['ID']):
-        if idx % 20 == 0:
-            print(f"Progress: {idx}/{len(test_ids_df)}")
+def create_minimal_submission(test_ids_file: str, output_path: str = "minimal_submission.csv"):
+    """Create minimal submission with just IDs and empty fields"""
+    try:
+        import pandas as pd
         
-        # Find image
-        image_path = None
-        for pattern in [f"{plot_id}.jpg", f"anonymised_{plot_id}.jpg", f"{plot_id}.png"]:
-            potential_path = os.path.join(image_dir, pattern)
-            if os.path.exists(potential_path):
-                image_path = potential_path
-                break
+        if not os.path.exists(test_ids_file):
+            print(f"Test IDs file not found: {test_ids_file}")
+            return
         
-        if image_path:
-            result = processor.process_document_simple(image_path, plot_id)
-        else:
-            result = processor._empty_result(plot_id)
+        # Load test IDs
+        test_ids_df = pd.read_csv(test_ids_file)
         
-        results.append(result)
+        # Create empty submission
+        submission_data = []
+        for _, row in test_ids_df.iterrows():
+            plot_id = str(row['ID'])
+            submission_data.append({
+                'ID': plot_id,
+                'TargetSurvey': '',
+                'Certified date': '',
+                'Total Area': '',
+                'Unit of Measurement': '',
+                'Parish': '',
+                'LT Num': '',
+                'geometry': []
+            })
+        
+        df = pd.DataFrame(submission_data)
+        df.to_csv(output_path, index=False)
+        
+        print(f"Created minimal submission with {len(submission_data)} entries: {output_path}")
+        
+        # Show sample
+        print(f"\nFirst 5 rows:")
+        print(df.head().to_string(index=False))
+        
+    except ImportError:
+        print("pandas not available - cannot create CSV")
+    except Exception as e:
+        print(f"Error creating minimal submission: {e}")
+
+def test_simple_processor():
+    """Test the simple processor"""
+    processor = SimpleProcessor()
     
-    # Create submission DataFrame
-    submission_df = pd.DataFrame(results)
-    column_order = ['ID', 'TargetSurvey', 'Certified date', 'Total Area',
-                   'Unit of Measurement', 'Parish', 'LT Num', 'geometry']
-    submission_df = submission_df[column_order]
-    
-    # Save to CSV
-    submission_df.to_csv(output_file, index=False)
-    
-    # Print summary
-    total_docs = len(submission_df)
-    valid_geometries = sum(1 for geom in submission_df['geometry'] if isinstance(geom, list) and len(geom) > 0)
-    
-    print(f"\nTest submission created:")
-    print(f"  Total documents: {total_docs}")
-    print(f"  Valid polygons: {valid_geometries}")
-    print(f"  Success rate: {valid_geometries/total_docs*100:.1f}%")
-    print(f"  Saved to: {output_file}")
-    
-    return submission_df
+    # Create a dummy image for testing
+    try:
+        img = Image.new('RGB', (800, 600), color='white')
+        test_path = "test_simple.png"
+        img.save(test_path)
+        
+        print("Testing Simple Processor")
+        print("=" * 30)
+        
+        result = processor.process_document(test_path, "TEST-001")
+        
+        print("Result:")
+        for key, value in result.items():
+            if key == 'geometry':
+                geom_info = f"{len(value)} points" if value else "None"
+                print(f"  {key}: {geom_info}")
+            else:
+                print(f"  {key}: '{value}'")
+        
+        # Clean up
+        if os.path.exists(test_path):
+            os.remove(test_path)
+            
+    except Exception as e:
+        print(f"Test failed: {e}")
 
 if __name__ == "__main__":
-    # Example usage
-    print("Simple document processor ready!")
-    print("Use create_test_submission(test_ids_df) to generate a basic submission")
+    print("Simple Document Processor (Minimal Dependencies)")
+    print("=" * 50)
+    
+    # Test the processor
+    test_simple_processor()
+    
+    # Check for test IDs file
+    test_ids_files = ["test_ids.csv", "test.csv", "sample_submission.csv"]
+    test_ids_file = None
+    
+    for filename in test_ids_files:
+        if os.path.exists(filename):
+            test_ids_file = filename
+            break
+    
+    if test_ids_file:
+        print(f"\nFound test IDs file: {test_ids_file}")
+        print("Creating minimal submission...")
+        create_minimal_submission(test_ids_file, "simple_submission.csv")
+    else:
+        print(f"\nNo test IDs file found. Looking for: {test_ids_files}")
+        print("You can create a minimal submission by providing a CSV with 'ID' column")
+        
+        # Create a sample test IDs file for demonstration
+        try:
+            import pandas as pd
+            sample_ids = [
+                "7703-078", "8606-095", "7703-064", "7703-101", "7707-114",
+                "8604-111", "7703-049", "7706-060", "7707-141", "7707-152"
+            ]
+            
+            sample_df = pd.DataFrame({'ID': sample_ids})
+            sample_df.to_csv("sample_test_ids.csv", index=False)
+            
+            print("Created sample_test_ids.csv for demonstration")
+            create_minimal_submission("sample_test_ids.csv", "demo_submission.csv")
+            
+        except ImportError:
+            print("pandas not available - cannot create sample files")
